@@ -1,3 +1,3 @@
 export default function University() {
-  return <>University stuff here</>;
+    return <>University stuff here</>
 }
