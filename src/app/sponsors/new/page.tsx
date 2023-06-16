@@ -4,6 +4,7 @@ import { headers } from "next/dist/client/components/headers";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { json } from "stream/consumers";
+import AddContact from "sponsorbook/components/addContact";
 
 export type CreateSponsorFormState = {
   email: string;
@@ -36,8 +37,21 @@ export default function CreateSponsor() {
   return (
     <>
       <div className="container-responsive">
-        <div className="row g-2">
-          <h2 className="mb-3 p-5">Add new sponsor</h2>
+        <div className="row">
+          <h2 className="p-5">Add new sponsor</h2>
+          <h4 className="mb-4">Main details</h4>
+          <div className="col-md">
+            <div className="form-floating mb-3">
+              <input
+                className="form-control"
+                id="floatingInput"
+                placeholder="name@gmail.com"
+                value=""
+                onChange=""
+              />
+              <label htmlFor="floatingInput">Company code</label>
+            </div>
+          </div>
           <div className="col-md">
             <div className="form-floating mb-3">
               <input
@@ -51,32 +65,6 @@ export default function CreateSponsor() {
               <label htmlFor="floatingInput">Sponsor name</label>
             </div>
           </div>
-          <div className="col-md">
-            <div className="form-floating mb-3">
-              <input
-                className="form-control"
-                id="floatingInput"
-                placeholder="name@gmail.com"
-                value={state.email}
-                onChange={(e) => setState({ ...state, email: e.target.value })}
-              />
-              <label htmlFor="floatingInput">Email</label>
-            </div>
-          </div>
-          <div className="col-md">
-            <div className="form-floating mb-3">
-              <input
-                className="form-control"
-                id="floatingInput"
-                placeholder="+37061095822"
-                value={state.phone}
-                onChange={(e) => setState({ ...state, phone: e.target.value })}
-              />
-              <label htmlFor="floatingInput">Number</label>
-            </div>
-          </div>
-        </div>
-        <div className="row g-2">
           <div className="col-md">
             <div className="form-floating mb-3">
               <select
@@ -95,29 +83,72 @@ export default function CreateSponsor() {
               <label htmlFor="floatingSelectGrid">Category</label>
             </div>
           </div>
+        </div>
+        <div className="row mt-7">
+          <h4 className="mb-4">Contacts</h4>
+          <AddContact />
+        </div>
+        <div className="mt-1">
+          <button
+            type="submit"
+            style={{ width: "10%" }}
+            className="btn btn-dark rounded"
+            onClick=""
+          >
+            Add
+          </button>
+        </div>
+
+        <div className="row mt-5">
+          <h4 className="mb-4">Other</h4>
           <div className="col-md">
             <div className="form-floating mb-3">
               <select
                 className="form-select"
                 id="floatingSelectGrid"
-                value={state.rating}
-                onChange={(e) => setState({ ...state, rating: e.target.value })}
+                value=""
+                onChange=""
               >
-                <option selected value="0">
-                  🔥🔥🔥🔥🔥
-                </option>
-                <option value="1">🔥🔥🔥🔥💩</option>
-                <option value="2">🔥🔥🔥💩💩</option>
-                <option value="3">🔥🔥💩💩💩</option>
-                <option value="4">🔥💩💩💩💩</option>
-                <option value="5">☠️☠️☠️☠️☠️</option>
+                <option selected>Unspecified</option>
+                <option value="5">5/5</option>
+                <option value="4">4/5</option>
+                <option value="3">3/5</option>
+                <option value="2">2/5</option>
+                <option value="1">1/5</option>
               </select>
-              <label htmlFor="floatingSelectGrid">Score</label>
+              <label htmlFor="floatingSelectGrid">Rating</label>
+            </div>
+            <div className="form-floating mb-3">
+              <textarea
+                style={{ height: "150px" }}
+                className="form-control"
+                id="floatingInput"
+                placeholder="name@gmail.com"
+                value=""
+                onChange=""
+              />
+              <label htmlFor="floatingInput">Rating details</label>
             </div>
           </div>
+          <div className="col-md">
+            <div className="form-floating mb-3">
+              <textarea
+                style={{ height: "200px" }}
+                className="form-control"
+                id="floatingInput"
+                placeholder="name@gmail.com"
+                value=""
+                onChange=""
+              />
+              <label htmlFor="floatingInput">Description</label>
+            </div>
+          </div>
+        </div>
+        <div className="row d-flex align-items-center justify-content-center mt-3">
           <button
+            style={{ width: "20%" }}
             type="submit"
-            className="btn btn-dark rounded mt-4"
+            className="btn btn-dark rounded"
             onClick={onSubmit}
           >
             Create
