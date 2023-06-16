@@ -1,4 +1,3 @@
-import Link from "next/link";
 import SearchBar from "sponsorbook/components/searchBard";
 import { Sponsor } from "sponsorbook/components/sponsor";
 import SponsorsTable from "sponsorbook/components/sponsorsTable";
