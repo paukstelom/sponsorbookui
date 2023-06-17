@@ -58,7 +58,13 @@ export default function SponsorLine({ sponsor }: SponsorCardProps) {
                             </a>
                         </li>
                         <li>
-                            <button className="dropdown-item">Delete</button>
+                            <button
+                                className="dropdown-item"
+                                type="submit"
+                                onClick={}
+                            >
+                                Delete
+                            </button>
                         </li>
                     </ul>
                 </div>
