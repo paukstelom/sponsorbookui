@@ -7,7 +7,10 @@ export type SponsorTableProps = {
 export default function SponsorsTable({ sponsors }: SponsorTableProps) {
     return (
         <>
-            <div className="table-responsive mt-4 rounded-4">
+            <div
+                className="table-responsive mt-4 rounded-4"
+                style={{ height: '500px' }}
+            >
                 <table className="table table-hover align-middle">
                     <thead className="table-dark">
                         <tr>
@@ -29,11 +32,12 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
                             <th className="text-center" scope="col">
                                 Score
                             </th>
+                            <th className="text-align-left" scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
                         {sponsors.map((Sponsor) => (
-                            <tr key={Sponsor.id}>
+                            <tr key={Sponsor._id}>
                                 <SponsorLine sponsor={Sponsor} />
                             </tr>
                         ))}

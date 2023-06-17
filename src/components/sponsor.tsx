@@ -1,10 +1,15 @@
+import Link from 'next/link'
+import { Contact, Rating } from 'sponsorbook/app/sponsors/new/page'
+
 export type Sponsor = {
-    id: string
+    _id: string
+    companyNumber: string
+    contacts: Contact[]
+    website: string
+    rating: Rating
     name: string
-    email: string
-    phone: string
-    rating: string
     category: string
+    description: string
 }
 
 export type SponsorCardProps = {
@@ -12,6 +17,7 @@ export type SponsorCardProps = {
 }
 
 export default function SponsorLine({ sponsor }: SponsorCardProps) {
+    console.log(sponsor)
     return (
         <>
             <td className="text-center">{sponsor.name}</td>
@@ -21,9 +27,42 @@ export default function SponsorLine({ sponsor }: SponsorCardProps) {
                     Available
                 </span>
             </td>
-            <td className="text-center">{sponsor.email}</td>
-            <td className="text-center">{sponsor.phone}</td>
+            <td className="text-center">{sponsor.contacts[0].email}</td>
+            <td className="text-center">{sponsor.contacts[0].phone}</td>
             <td className="text-center">🔥🔥🔥💩💩</td>
+            <td className="text-align-right">
+                <div className="dropdown">
+                    <button
+                        className="btn dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    ></button>
+                    <ul className="dropdown-menu">
+                        <li>
+                            <a className="dropdown-item" href="#">
+                                Connect
+                            </a>
+                        </li>
+                        <li>
+                            <Link
+                                className="dropdown-item"
+                                href={`/sponsors/${sponsor._id}`}
+                            >
+                                View
+                            </Link>
+                        </li>
+                        <li>
+                            <a className="dropdown-item" href="#">
+                                Edit
+                            </a>
+                        </li>
+                        <li>
+                            <button className="dropdown-item">Delete</button>
+                        </li>
+                    </ul>
+                </div>
+            </td>
         </>
     )
 }
