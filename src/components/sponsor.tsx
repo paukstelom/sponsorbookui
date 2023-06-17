@@ -1,4 +1,7 @@
+'use client'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
 import { Contact, Rating } from 'sponsorbook/app/sponsors/new/page'
 
 export type Sponsor = {
@@ -17,7 +20,16 @@ export type SponsorCardProps = {
 }
 
 export default function SponsorLine({ sponsor }: SponsorCardProps) {
-    console.log(sponsor)
+    const router = useRouter()
+
+    const onSubmit = async () => {
+        await fetch(`http://127.0.0.1:8000/sponsors/${sponsor._id}`, {
+            method: 'delete',
+        })
+
+        router.refresh()
+    }
+
     return (
         <>
             <td className="text-center">{sponsor.name}</td>
@@ -61,7 +73,7 @@ export default function SponsorLine({ sponsor }: SponsorCardProps) {
                             <button
                                 className="dropdown-item"
                                 type="submit"
-                                onClick={}
+                                onClick={onSubmit}
                             >
                                 Delete
                             </button>
