@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { use, useEffect, useState } from 'react'
 import NewEventComponent from 'sponsorbook/components/eventNewComponent'
+import { getSubOrgs } from 'sponsorbook/clients/sponsorbook'
 
 export type CreateEventFormState = {
     name: string
@@ -17,9 +18,7 @@ export type SubOrganization = {
 }
 
 export default async function NewEvent() {
-    const x = await fetch('http://127.0.0.1:8000/sub_organizations/', {
-        next: { revalidate: 0 },
-    })
+    const x = await getSubOrgs()
     const data = await x.json()
     return <NewEventComponent subOrganizations={data} />
 }

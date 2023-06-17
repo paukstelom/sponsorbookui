@@ -1,14 +1,12 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { use, useEffect, useState } from 'react'
-import { SubOrganization } from 'sponsorbook/app/events/new/page'
-
-export type CreateEventFormState = {
-    name: string
-    description: string
-    sub_organization_ids: string[]
-}
+import { useState } from 'react'
+import {
+    CreateEventFormState,
+    SubOrganization,
+} from 'sponsorbook/app/events/new/page'
+import { createEvent } from 'sponsorbook/clients/sponsorbook'
 
 export default function NewEventComponent({
     subOrganizations,
@@ -24,12 +22,24 @@ export default function NewEventComponent({
     const router = useRouter()
 
     const onSubmit = async () => {
-        await fetch('http://127.0.0.1:8000/events/', {
-            method: 'post',
-            body: JSON.stringify(state),
-            headers: { 'content-type': 'application/json' },
-        })
+        await createEvent(state)
         router.push('/events')
+    }
+
+    const addSubOrg = (id: string) => {
+        setState({
+            ...state,
+            sub_organization_ids: [...state.sub_organization_ids, id],
+        })
+    }
+
+    const removeSubOrg = (id: string) => {
+        setState({
+            ...state,
+            sub_organization_ids: state.sub_organization_ids.filter(
+                (x) => x !== id
+            ),
+        })
     }
 
     return (
@@ -85,23 +95,9 @@ export default function NewEventComponent({
                                     id=""
                                     onChange={(e) => {
                                         if (e.target.checked) {
-                                            setState({
-                                                ...state,
-                                                sub_organization_ids: [
-                                                    ...state.sub_organization_ids,
-                                                    subOrganization._id,
-                                                ],
-                                            })
+                                            addSubOrg(subOrganization._id)
                                         } else {
-                                            setState({
-                                                ...state,
-                                                sub_organization_ids:
-                                                    state.sub_organization_ids.filter(
-                                                        (x) =>
-                                                            x !==
-                                                            subOrganization._id
-                                                    ),
-                                            })
+                                            removeSubOrg(subOrganization._id)
                                         }
                                     }}
                                 />

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import { Contact, Rating } from 'sponsorbook/app/sponsors/new/page'
+import { deleteOneSponsor } from 'sponsorbook/clients/sponsorbook'
 
 export type Sponsor = {
     _id: string
@@ -23,9 +24,7 @@ export default function SponsorLine({ sponsor }: SponsorCardProps) {
     const router = useRouter()
 
     const onSubmit = async () => {
-        await fetch(`http://127.0.0.1:8000/sponsors/${sponsor._id}`, {
-            method: 'delete',
-        })
+        await deleteOneSponsor(sponsor._id)
 
         router.refresh()
     }

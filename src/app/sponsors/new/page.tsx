@@ -1,10 +1,12 @@
 'use client'
 
-import { headers } from 'next/dist/client/components/headers'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { json } from 'stream/consumers'
 import AddContact from 'sponsorbook/components/addContact'
+import {
+    createSponsor,
+    CreateSponsorRequest,
+} from 'sponsorbook/clients/sponsorbook'
 
 export type Rating = {
     score: string
@@ -18,18 +20,8 @@ export type Contact = {
     details: string
 }
 
-export type CreateSponsorFormState = {
-    companyNumber: string
-    contacts: Contact[]
-    website: string
-    rating: Rating
-    name: string
-    category: string
-    description: string
-}
-
 export default function CreateSponsor() {
-    const [state, setState] = useState<CreateSponsorFormState>({
+    const [state, setState] = useState<CreateSponsorRequest>({
         companyNumber: '123',
         name: '123',
         website: '123.com',
@@ -45,11 +37,7 @@ export default function CreateSponsor() {
         setState({ ...state, rating: newRating })
 
     const onSubmit = async () => {
-        await fetch('http://127.0.0.1:8000/sponsors', {
-            method: 'post',
-            body: JSON.stringify(state),
-            headers: { 'content-type': 'application/json' },
-        })
+        await createSponsor(state)
         router.push('/sponsors')
     }
 

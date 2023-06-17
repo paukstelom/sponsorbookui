@@ -1,17 +1,13 @@
 import router from 'next/navigation'
 import { Sponsor } from 'sponsorbook/components/sponsor'
+import { getOneSponsor } from 'sponsorbook/clients/sponsorbook'
 
 export default async function Sponsor({
     params,
 }: {
     params: { sponsorId: string }
 }) {
-    const data = await fetch(
-        `http://127.0.0.1:8000/sponsor/${params.sponsorId}`,
-        {
-            next: { revalidate: 0 },
-        }
-    )
+    const data = await getOneSponsor(`/sponsor/${params.sponsorId}`)
     const sponsor = (await data.json()) as Sponsor
 
     return (

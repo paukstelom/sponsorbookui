@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import { Contact, Rating } from 'sponsorbook/app/sponsors/new/page'
+import { deleteOneEvent } from 'sponsorbook/clients/sponsorbook'
 
 export type Eventer = {
     _id: string
@@ -18,10 +19,7 @@ export default function EventCard({ event }: EventCardProps) {
     const router = useRouter()
 
     const onSubmit = async () => {
-        await fetch(`http://127.0.0.1:8000/events/${event._id}`, {
-            method: 'delete',
-        })
-
+        await deleteOneEvent(event._id)
         router.refresh()
     }
     console.log(event)

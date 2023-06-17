@@ -1,11 +1,9 @@
 import EventCard, { Eventer } from 'sponsorbook/components/eventCard'
+import { getEvents } from 'sponsorbook/clients/sponsorbook'
 
 export default async function Events() {
-    const data = await fetch('http://127.0.0.1:8000/events', {
-        next: { revalidate: 0 },
-    })
+    const data = await getEvents()
     const events = (await data.json()) as Eventer[]
-    console.log(events)
     return (
         <>
             <div className="container-responsive">
