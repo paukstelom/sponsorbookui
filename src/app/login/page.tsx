@@ -1,15 +1,38 @@
+'use client'
+import { useFormik } from 'formik'
+import { createOrganization, login } from 'sponsorbook/clients/sponsorbook'
+
+export type LoginFormState = {
+    email: string
+    password: string
+}
+
 export default function Login() {
+    const formik = useFormik<LoginFormState>({
+        initialValues: {
+            email: '',
+            password: '',
+        },
+        onSubmit: async () => {
+            console.log(formik.values)
+            await login(formik.values)
+        },
+    })
+
     return (
         <>
             <div className="container-fluid" style={{ width: '25rem' }}>
-                <form>
+                <form onSubmit={formik.handleSubmit}>
                     <h1 className="h3 mb-3 fw-normal">Sign in</h1>
                     <div className="form-floating mb-3">
                         <input
                             type="email"
                             className="form-control"
                             id="floatingInput"
+                            name="email"
                             placeholder="name@example.com"
+                            value={formik.values.email}
+                            onChange={formik.handleChange}
                         />
                         <label htmlFor="floatingInput">Email address</label>
                     </div>
@@ -19,6 +42,9 @@ export default function Login() {
                             className="form-control"
                             id="floatingPassword"
                             placeholder="Password"
+                            name="password"
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
                         />
                         <label htmlFor="floatingPassword">Password</label>
                     </div>
@@ -31,7 +57,7 @@ export default function Login() {
                         />
                         <label
                             className="form-check-label"
-                            for="flexCheckDefault"
+                            htmlFor="flexCheckDefault"
                         >
                             Remember me
                         </label>

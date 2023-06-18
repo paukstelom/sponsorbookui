@@ -1,4 +1,5 @@
 import { CreateOrganizationFormState } from 'sponsorbook/app/devpage/page'
+import { LoginFormState } from 'sponsorbook/app/login/page'
 import { Contact, Rating } from 'sponsorbook/app/sponsors/new/page'
 
 const sponsorbookUrl = (path: string) => `http://127.0.0.1:8000${path}`
@@ -12,6 +13,15 @@ export type CreateSponsorRequest = {
     category: string
     description: string
 }
+
+export const login = (data: LoginFormState) =>
+    fetch(sponsorbookUrl('/login'), {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json'}
+    })
+
+
 export const createSponsor = (data: CreateSponsorRequest) =>
     fetch(sponsorbookUrl('/sponsors'), {
         method: 'POST',
