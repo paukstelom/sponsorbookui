@@ -1,126 +1,116 @@
 'use client'
+import { BackTop, Button, Col, Drawer, Menu, Row } from 'antd'
+import { MenuOutlined } from '@ant-design/icons'
+import Layout, { Header } from 'antd/es/layout/layout'
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Navbar() {
-    const loggedIn: boolean = true
+    const [visible, setVisible] = useState(false)
 
-    useEffect(() => {
-        require('bootstrap/dist/js/bootstrap.bundle')
-    }, [])
-    const LoggedInNavbar = () => (
-        <div className="container">
-            <Link href="/" style={{ textDecoration: 'none' }}>
-                <button className="navbar-brand nav-link fs-4">
-                    SponsorBook
-                </button>
-            </Link>
-            <button
-                className="navbar-toggler shadow-none border-0"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar"
-                aria-label="Toggle navigation"
-            >
-                <span className="navbar-toggler-icon"></span>
-            </button>
-            <div
-                className="sidebar offcanvas offcanvas-start"
-                style={{ backdropFilter: 'blur' }}
-                tabIndex={-1}
-                id="offcanvasNavbar"
-                aria-labelledby="offcanvasNavbarLabel"
-            >
-                <div className="offcanvas-header border-bottom">
-                    <h5 className="offcanvas-title" id="offcanvasNavbarLabel">
-                        SponsorBook
-                    </h5>
-                    <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close"
-                    ></button>
-                </div>
-                <div className="offcanvas-body d-flex flex-column flex-lg-row">
-                    <ul className="navbar-nav justify-content-center align-items-center flex-grow-1 pe-3 fs-5">
-                        <li className="nav-item mx-2">
-                            <Link
-                                href="/search"
-                                className="text-decoration-none"
-                            >
-                                <button className="nav-link">Search</button>
-                            </Link>
-                        </li>
-                        <li className="nav-item mx-2">
-                            <Link
-                                href="/sponsors"
-                                className="text-decoration-none"
-                            >
-                                <button className="nav-link">Sponsors</button>
-                            </Link>
-                        </li>
-                        <li className="nav-item mx-2">
-                            <Link
-                                href="/events"
-                                className="text-decoration-none"
-                            >
-                                <button className="nav-link">Events</button>
-                            </Link>
-                        </li>
-                        <li className="nav-item mx-2">
-                            <Link
-                                href="/history"
-                                className="text-decoration-none"
-                            >
-                                <button className="nav-link">History</button>
-                            </Link>
-                        </li>
-                        <li className="nav-item mx-2">
-                            <Link
-                                href="/university"
-                                className="text-decoration-none"
-                            >
-                                <button className="nav-link">University</button>
-                            </Link>
-                        </li>
-                    </ul>
-                    <div className="d-flex flex-column justify-content-center align-items-center gap-3">
-                        <Link href="/account">
-                            <button className="btn btn-dark text-white text-decoration-none py-1 rounded-4">
-                                Account
-                            </button>
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
+    const showDrawer = () => {
+        setVisible(true)
+    }
 
-    const LoggedOutNavbar = () => (
-        <div className="container">
-            <Link href="/" style={{ textDecoration: 'none' }}>
-                <button className="navbar-brand nav-link fs-4">
-                    SponsorBook
-                </button>
-            </Link>
-            <div className="ms-auto justify-content-right align-items-right gap-3">
-                <a
-                    href="/"
-                    className="text-white text-decoration-none px-3 py-1 bg-dark rounded-4"
-                >
-                    Sign In
-                </a>
-            </div>
-        </div>
-    )
+    const onClose = () => {
+        setVisible(false)
+    }
 
     return (
-        <>
-            <nav className="navbar bg-body-tertiary fixed-top navbar-expand-lg">
-                {loggedIn ? <LoggedInNavbar /> : <LoggedOutNavbar />}
-            </nav>
-        </>
+        <Header>
+            <Row>
+                <Col xs={20} sm={20} md={4}>
+                    <Link href={'/'} style={{ textDecoration: 'none' }}>
+                        <div
+                            className="logo"
+                            style={{
+                                color: 'white',
+                                fontSize: 20,
+                                paddingLeft: '20px',
+                            }}
+                        >
+                            SponsorBook
+                        </div>
+                    </Link>
+                </Col>
+                <Col xs={0} sm={0} md={20}>
+                    <Menu theme="dark" mode="horizontal">
+                        <Menu.Item>
+                            <Link
+                                href={'/search'}
+                                style={{ textDecoration: 'none' }}
+                            >
+                                Search
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item>
+                            <Link
+                                href={'/sponsors'}
+                                style={{ textDecoration: 'none' }}
+                            >
+                                Sponsors
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item>
+                            <Link
+                                href={'/events'}
+                                style={{ textDecoration: 'none' }}
+                            >
+                                Events
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item>
+                            <Link
+                                href={'/history'}
+                                style={{ textDecoration: 'none' }}
+                            >
+                                History
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item>
+                            <Link
+                                href={'/university'}
+                                style={{ textDecoration: 'none' }}
+                            >
+                                University
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item style={{ marginLeft: 'auto' }}>
+                            <Button type="primary">
+                                <Link
+                                    href={'/account'}
+                                    style={{ textDecoration: 'none' }}
+                                >
+                                    Account
+                                </Link>
+                            </Button>
+                        </Menu.Item>
+                    </Menu>
+                </Col>
+                <Col xs={2} sm={2} md={0}>
+                    <Button type="primary" onClick={showDrawer}>
+                        <MenuOutlined />
+                    </Button>
+                </Col>
+            </Row>
+            <Drawer
+                title="SponsorBook"
+                placement="left"
+                onClick={onClose}
+                onClose={onClose}
+                visible={visible}
+            >
+                <Menu mode="vertical" style={{ marginLeft: '100px' }}>
+                    <Menu.Item>Search</Menu.Item>
+                    <Menu.Item>Sponsors</Menu.Item>
+                    <Menu.Item>Events</Menu.Item>
+                    <Menu.Item>History</Menu.Item>
+                    <Menu.Item>University</Menu.Item>
+                    <Menu.Item>
+                        <Button type="primary">Account</Button>
+                    </Menu.Item>
+                </Menu>
+            </Drawer>
+        </Header>
     )
 }

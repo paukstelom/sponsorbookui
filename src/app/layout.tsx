@@ -3,6 +3,9 @@ import { Inter } from 'next/font/google'
 import 'bootstrap/dist/css/bootstrap.css'
 import Footer from 'sponsorbook/components/footer'
 import Navbar from 'sponsorbook/components/navbar'
+import { Layout, Menu } from 'antd'
+import { Header } from 'antd/es/layout/layout'
+import { SponsorBookLayout } from 'sponsorbook/components/sponsorBookLayout'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,9 +24,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <Navbar />
-                <div className="container">{children}</div>
-                <Footer />
+                <SponsorBookLayout>{children}</SponsorBookLayout>
             </body>
         </html>
     )

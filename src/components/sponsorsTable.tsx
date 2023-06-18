@@ -1,49 +1,47 @@
+'use client'
+import { Table } from 'antd'
 import SponsorLine, { Sponsor } from './sponsor'
+import { ColumnsType } from 'antd/es/table'
 
 export type SponsorTableProps = {
     sponsors: Sponsor[]
 }
 
 export default function SponsorsTable({ sponsors }: SponsorTableProps) {
+    const columns = [
+        { title: 'Company name', dataIndex: 'companyName', key: 'companyName' },
+        { title: 'Category', dataIndex: 'category', key: 'category' },
+        { title: 'Status', dataIndex: 'status', key: 'status' },
+        { title: 'Email', dataIndex: 'email', key: 'email' },
+        { title: 'Number', dataIndex: 'number', key: 'number' },
+        { title: 'Rating', dataIndex: 'rating', key: 'rating' },
+    ]
+
+    const dataSource = sponsors.map((sponsor) => ({
+        key: sponsor._id,
+        companyName: sponsor.name,
+        category: sponsor.category,
+        status: 'Available',
+        email: sponsor.contacts[0].email,
+        number: sponsor.contacts[0].phone,
+        rating: sponsor.rating.score,
+    }))
+
+    // const dataSource = [
+    //     {
+    //         key: '1',
+    //         companyName: 'Redbull',
+    //         category: 'Drinks',
+    //         status: 'Available',
+    //         email: 'info@redbull.com',
+    //         number: '+370000000',
+    //         rating: '5/5',
+    //     },
+    // ]
+
     return (
         <>
-            <div
-                className="table-responsive mt-4 rounded-4"
-                style={{ height: '500px' }}
-            >
-                <table className="table table-hover align-middle">
-                    <thead className="table-dark">
-                        <tr>
-                            <th className="text-center" scope="col">
-                                Name
-                            </th>
-                            <th className="text-center" scope="col">
-                                Category
-                            </th>
-                            <th className="text-center" scope="col">
-                                Status
-                            </th>
-                            <th className="text-center" scope="col">
-                                Email
-                            </th>
-                            <th className="text-center" scope="col">
-                                Number
-                            </th>
-                            <th className="text-center" scope="col">
-                                Score
-                            </th>
-                            <th className="text-align-left" scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {sponsors.map((Sponsor) => (
-                            <tr key={Sponsor._id}>
-                                <SponsorLine sponsor={Sponsor} />
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            <Table dataSource={dataSource} columns={columns}></Table>
         </>
     )
 }
