@@ -23,7 +23,6 @@ export default function EventCard({ event }: EventCardProps) {
         await deleteOneEvent(event._id)
         router.refresh()
     }
-    console.log(event)
 
     const onClose = async () => {
         await closeOneEvent(event._id)
