@@ -7,8 +7,10 @@ export default async function Sponsor({
 }: {
     params: { sponsorId: string }
 }) {
-    const data = await getOneSponsor(`/sponsor/${params.sponsorId}`)
+    const data = await getOneSponsor(params.sponsorId)
     const sponsor = (await data.json()) as Sponsor
+
+    console.log(sponsor)
 
     return (
         <>
