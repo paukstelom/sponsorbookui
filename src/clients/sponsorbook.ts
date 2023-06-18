@@ -1,3 +1,4 @@
+import { CreateOrganizationFormState } from 'sponsorbook/app/devpage/page'
 import { Contact, Rating } from 'sponsorbook/app/sponsors/new/page'
 
 const sponsorbookUrl = (path: string) => `http://127.0.0.1:8000${path}`
@@ -47,6 +48,14 @@ export const deleteOneEvent = (eventId: string) =>
     fetch(sponsorbookUrl(`/events/${eventId}`), {
         method: 'DELETE',
     })
+
+export const createOrganization = (data: CreateOrganizationFormState) =>
+    fetch(sponsorbookUrl('/organizations'), {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json'}
+    })
+
 
 export const closeOneEvent = (eventId: string) =>
 fetch(sponsorbookUrl(`/events/${eventId}/close`), {
