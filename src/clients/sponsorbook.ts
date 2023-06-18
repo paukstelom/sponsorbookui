@@ -34,14 +34,24 @@ export const getEvents = () =>
     })
 
 export const getOneSponsor = (sponsorId: string) =>
-    fetch(sponsorbookUrl(`/sponsor/${sponsorId}`), {
+    fetch(sponsorbookUrl(`/sponsors/${sponsorId}`), {
         next: { revalidate: 0 },
     })
+
+export const getOneEvent = (eventId: string) =>
+    fetch(sponsorbookUrl(`/events/${eventId}`), {
+        next: { revalidate: 0 },
+    })    
 
 export const deleteOneEvent = (eventId: string) =>
     fetch(sponsorbookUrl(`/events/${eventId}`), {
         method: 'DELETE',
     })
+
+export const closeOneEvent = (eventId: string) =>
+fetch(sponsorbookUrl(`/events/${eventId}/close`), {
+        method: 'POST'
+})
 
 export const deleteOneSponsor = (sponsorId: string) =>
     fetch(sponsorbookUrl(`/sponsors/${sponsorId}`), {
