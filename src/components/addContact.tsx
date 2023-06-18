@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Contact } from 'sponsorbook/app/sponsors/new/page'
 
 export default function AddContact({

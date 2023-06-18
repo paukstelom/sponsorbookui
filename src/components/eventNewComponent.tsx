@@ -1,66 +1,63 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import {
     CreateEventFormState,
     SubOrganization,
 } from 'sponsorbook/app/events/new/page'
 import { createEvent } from 'sponsorbook/clients/sponsorbook'
+import { useFormik } from 'formik'
 
 export default function NewEventComponent({
     subOrganizations,
 }: {
     subOrganizations: SubOrganization[]
 }) {
-    const [state, setState] = useState<CreateEventFormState>({
-        name: '',
-        description: '',
-        sub_organization_ids: [],
-    })
-
     const router = useRouter()
 
-    const onSubmit = async () => {
-        await createEvent(state)
-        router.push('/events')
-    }
+    const formik = useFormik<CreateEventFormState>({
+        initialValues: {
+            name: '',
+            description: '',
+            sub_organization_ids: [],
+        },
+        onSubmit: async () => {
+            await createEvent(formik.values)
+            router.push('/events')
+        },
+    })
 
     const addSubOrg = (id: string) => {
-        setState({
-            ...state,
-            sub_organization_ids: [...state.sub_organization_ids, id],
+        formik.setValues({
+            ...formik.values,
+            sub_organization_ids: [...formik.values.sub_organization_ids, id],
         })
     }
 
     const removeSubOrg = (id: string) => {
-        setState({
-            ...state,
-            sub_organization_ids: state.sub_organization_ids.filter(
+        formik.setValues({
+            ...formik.values,
+            sub_organization_ids: formik.values.sub_organization_ids.filter(
                 (x) => x !== id
             ),
         })
     }
 
     return (
-        <>
+        <form onSubmit={formik.handleSubmit}>
             <div className="container-responsive">
                 <h2 className="p-5">Create new event</h2>
                 <div className="row">
                     <div className="col-md">
                         <div className="form-floating mb-3">
                             <input
-                                type="email"
                                 className="form-control"
-                                id="floatingInput"
+                                id="name"
+                                name="name"
+                                type="text"
                                 placeholder="John Doe UAB"
-                                value={state.name}
-                                onChange={(e) =>
-                                    setState({
-                                        ...state,
-                                        name: e.target.value,
-                                    })
-                                }
+                                value={formik.values.name}
+                                onChange={formik.handleChange}
                             />
                             <label htmlFor="floatingInput">Event name</label>
                         </div>
@@ -68,15 +65,11 @@ export default function NewEventComponent({
                             <textarea
                                 style={{ height: '200px' }}
                                 className="form-control"
-                                id="floatingInput"
-                                placeholder="name@gmail.com"
-                                value={state.description}
-                                onChange={(e) =>
-                                    setState({
-                                        ...state,
-                                        description: e.target.value,
-                                    })
-                                }
+                                id="description"
+                                name={'description'}
+                                placeholder="Your description"
+                                value={formik.values.description}
+                                onChange={formik.handleChange}
                             />
                             <label htmlFor="floatingInput">Description</label>
                         </div>
@@ -116,12 +109,11 @@ export default function NewEventComponent({
                         style={{ width: '20%' }}
                         type="submit"
                         className="btn btn-dark rounded"
-                        onClick={onSubmit}
                     >
                         Create
                     </button>
                 </div>
             </div>
-        </>
+        </form>
     )
 }
