@@ -1,37 +1,44 @@
 'use client'
 
-import { headers } from 'next/dist/client/components/headers'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { json } from 'stream/consumers'
 import AddContact from 'sponsorbook/components/addContact'
+import {
+    createSponsor,
+    CreateSponsorRequest,
+} from 'sponsorbook/clients/sponsorbook'
 
-export type CreateSponsorFormState = {
-    email: string
+export type Rating = {
+    score: string
+    info: string
+}
+
+export type Contact = {
     name: string
+    email: string
     phone: string
-    rating: string
-    category: string
+    details: string
 }
 
 export default function CreateSponsor() {
-    const [state, setState] = useState<CreateSponsorFormState>({
-        email: '',
-        name: '',
-        phone: '',
-        rating: '1',
+    const [state, setState] = useState<CreateSponsorRequest>({
+        companyNumber: '123',
+        name: '123',
+        website: '123.com',
+        contacts: [{ email: '123', name: '123', phone: '123', details: '123' }],
+        rating: { score: '1', info: '123' },
         category: '1',
+        description: '123',
     })
 
     const router = useRouter()
 
+    const setRating = (newRating: Rating) =>
+        setState({ ...state, rating: newRating })
+
     const onSubmit = async () => {
-        await fetch('http://127.0.0.1:8000/sponsors', {
-            method: 'post',
-            body: JSON.stringify(state),
-            headers: { 'content-type': 'application/json' },
-        })
-        await router.push('/sponsors')
+        await createSponsor(state)
+        router.push('/sponsors')
     }
 
     return (
@@ -46,9 +53,14 @@ export default function CreateSponsor() {
                                 className="form-control"
                                 id="floatingInput"
                                 placeholder="name@gmail.com"
-                                value=""
-                                onChange=""
-                            />
+                                value={state.companyNumber}
+                                onChange={(e) =>
+                                    setState({
+                                        ...state,
+                                        companyNumber: e.target.value,
+                                    })
+                                }
+                            ></input>
                             <label htmlFor="floatingInput">Company code</label>
                         </div>
                     </div>
@@ -65,6 +77,24 @@ export default function CreateSponsor() {
                                 }
                             />
                             <label htmlFor="floatingInput">Sponsor name</label>
+                        </div>
+                    </div>
+                    <div className="col-sm">
+                        <div className="form-floating mb-3">
+                            <input
+                                type="email"
+                                className="form-control"
+                                id="floatingInput"
+                                placeholder="John Doe UAB"
+                                value={state.website}
+                                onChange={(e) =>
+                                    setState({
+                                        ...state,
+                                        website: e.target.value,
+                                    })
+                                }
+                            />
+                            <label htmlFor="floatingInput">Website</label>
                         </div>
                     </div>
                     <div className="col-md">
@@ -90,18 +120,16 @@ export default function CreateSponsor() {
                     </div>
                 </div>
                 <div className="row mt-7">
-                    <h4 className="mb-4">Contacts</h4>
-                    <AddContact />
-                </div>
-                <div className="mt-1">
-                    <button
-                        type="submit"
-                        style={{ width: '10%' }}
-                        className="btn btn-dark rounded"
-                        onClick=""
-                    >
-                        Add
-                    </button>
+                    <h4 className="mb-4">Contact details</h4>
+                    <AddContact
+                        contact={state.contacts[0]}
+                        setContact={(contact) =>
+                            setState({
+                                ...state,
+                                contacts: [contact],
+                            })
+                        }
+                    />
                 </div>
 
                 <div className="row mt-5">
@@ -111,8 +139,13 @@ export default function CreateSponsor() {
                             <select
                                 className="form-select"
                                 id="floatingSelectGrid"
-                                value=""
-                                onChange=""
+                                value={state.rating.score}
+                                onChange={(e) =>
+                                    setRating({
+                                        ...state.rating,
+                                        score: e.target.value,
+                                    })
+                                }
                             >
                                 <option selected>Unspecified</option>
                                 <option value="5">5/5</option>
@@ -129,8 +162,13 @@ export default function CreateSponsor() {
                                 className="form-control"
                                 id="floatingInput"
                                 placeholder="name@gmail.com"
-                                value=""
-                                onChange=""
+                                value={state.rating.info}
+                                onChange={(e) =>
+                                    setRating({
+                                        ...state.rating,
+                                        info: e.target.value,
+                                    })
+                                }
                             />
                             <label htmlFor="floatingInput">
                                 Rating details
@@ -144,8 +182,13 @@ export default function CreateSponsor() {
                                 className="form-control"
                                 id="floatingInput"
                                 placeholder="name@gmail.com"
-                                value=""
-                                onChange=""
+                                value={state.description}
+                                onChange={(e) =>
+                                    setState({
+                                        ...state,
+                                        description: e.target.value,
+                                    })
+                                }
                             />
                             <label htmlFor="floatingInput">Description</label>
                         </div>
