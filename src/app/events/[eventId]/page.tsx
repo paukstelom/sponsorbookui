@@ -11,8 +11,6 @@ export default async function Event({
     const data = await getOneEvent(params.eventId)
     const event = (await data.json()) as Eventer
 
-    console.log(event)
-
     return (
         <>
             <h1>Name: {event.name}</h1>
