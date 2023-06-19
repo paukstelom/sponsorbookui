@@ -1,3 +1,5 @@
-export default function University() {
-    return <>University stuff here</>
+import UniversityPageComponent from 'sponsorbook/components/universityPage/universityPageComponent'
+
+export default async function University() {
+    return <UniversityPageComponent />
 }

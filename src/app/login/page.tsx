@@ -1,4 +1,4 @@
-import LoginForm from 'sponsorbook/components/loginForm'
+import LoginPageComponent from 'sponsorbook/components/loginPage/loginPageComponent'
 
 export type LoginFormState = {
     email: string
@@ -6,9 +6,5 @@ export type LoginFormState = {
 }
 
 export default async function LoginPage() {
-    return (
-        <>
-            <LoginForm />
-        </>
-    )
+    return <LoginPageComponent />
 }

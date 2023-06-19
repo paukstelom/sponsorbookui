@@ -1,8 +1,9 @@
 import { getEvents, getSubOrgs } from 'sponsorbook/clients/sponsorbook'
-import { SubOrganization } from 'sponsorbook/clients/sponsorbook/models'
-import EventCollection, {
+import {
     Eventer,
-} from 'sponsorbook/components/eventCollection'
+    SubOrganization,
+} from 'sponsorbook/clients/sponsorbook/models'
+import EventsPageComponent from 'sponsorbook/components/eventsPage/eventsPageComponent'
 
 export default async function AllEventsPage() {
     const eventData = await getEvents()
@@ -13,7 +14,7 @@ export default async function AllEventsPage() {
 
     return (
         <>
-            <EventCollection
+            <EventsPageComponent
                 events={events}
                 subOrganizations={subOrganizations}
             />

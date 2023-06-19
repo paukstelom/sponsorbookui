@@ -7,7 +7,7 @@ import React from 'react'
 import TextArea from 'antd/es/input/TextArea'
 import { SubOrganization } from 'sponsorbook/clients/sponsorbook/models'
 
-export default function NewEventComponent({
+export default function NewEventForm({
     subOrganizations,
 }: {
     subOrganizations: SubOrganization[]
