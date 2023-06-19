@@ -1,5 +1,6 @@
 import { LoginFormState } from 'sponsorbook/app/login/page'
 import {
+    CreateCategoryRequest,
     CreateOrganizationRequest,
     CreateSponsorRequest,
 } from 'sponsorbook/clients/sponsorbook/creationModels'
@@ -53,6 +54,14 @@ export const deleteOneEvent = (eventId: string) =>
 
 export const createOrganization = (data: CreateOrganizationRequest) =>
     fetch(sponsorbookUrl('/organizations'), {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' },
+    })
+
+
+export const createCategory = (data: CreateCategoryRequest) =>
+    fetch(sponsorbookUrl('/categories'), {
         method: 'POST',
         body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' },

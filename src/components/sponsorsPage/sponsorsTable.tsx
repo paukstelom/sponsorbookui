@@ -1,8 +1,10 @@
 'use client'
 import { Button, Modal, Table } from 'antd'
-import SponsorLine, { Sponsor } from './sponsor'
 import { useState } from 'react'
 import React from 'react'
+import { ExclamationCircleFilled } from '@ant-design/icons'
+import { Sponsor } from 'sponsorbook/clients/sponsorbook/models'
+import { deleteOneSponsor } from 'sponsorbook/clients/sponsorbook'
 
 export type SponsorTableProps = {
     sponsors: Sponsor[]
@@ -11,6 +13,7 @@ export type SponsorTableProps = {
 export default function SponsorsTable({ sponsors }: SponsorTableProps) {
     const [selectedSponsor, setSelectedSponsor] = useState<Sponsor>()
 
+    const { confirm } = Modal
     const columns = [
         { title: 'Company name', dataIndex: 'companyName', key: 'companyName' },
         { title: 'Category', dataIndex: 'category', key: 'category' },
@@ -31,17 +34,22 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
         rating: sponsor.rating.score,
     }))
 
-    // const dataSource = [
-    //     {
-    //         key: '1',
-    //         companyName: 'Redbull',
-    //         category: 'Drinks',
-    //         status: 'Available',
-    //         email: 'info@redbull.com',
-    //         number: '+370000000',
-    //         rating: '5/5',
-    //     },
-    // ]
+    const showDeleteConfirm = () => {
+        confirm({
+            title: `Warning!`,
+            icon: <ExclamationCircleFilled />,
+            content: `Are you sure delete ${selectedSponsor?.name}?`,
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                deleteOneSponsor(selectedSponsor!._id)
+            },
+            onCancel() {
+                console.log('Cancel')
+            },
+        })
+    }
 
     return (
         <>
@@ -56,7 +64,13 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
                     <Button key="connect">Connect</Button>,
                     <Button key="addContact">Add contact</Button>,
                     <Button key="editDetails">Edit details</Button>,
-                    <Button key="delete">Delete</Button>,
+                    <Button
+                        key="deleteSponsor"
+                        onClick={showDeleteConfirm}
+                        type="dashed"
+                    >
+                        Delete
+                    </Button>,
                 ]}
             >
                 <h6>Company number: {selectedSponsor?.companyNumber}</h6>

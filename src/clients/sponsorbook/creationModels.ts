@@ -18,3 +18,8 @@ export type LoginRequest = {
     email: string
     password: string
 }
+
+export type CreateCategoryRequest = {
+    name: string
+    info: string
+}

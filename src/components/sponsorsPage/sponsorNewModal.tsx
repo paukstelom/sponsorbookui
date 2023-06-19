@@ -1,31 +1,65 @@
 'use client'
-import { Button, Form, FormInstance, Input, Modal, Rate, Select } from 'antd'
+import { Button, Form, Input, Modal, Rate, Select } from 'antd'
 import { useState } from 'react'
 import React from 'react'
 import TextArea from 'antd/es/input/TextArea'
+import { CreateSponsorRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
+import { createSponsor } from 'sponsorbook/clients/sponsorbook'
+
+type CreateSponsorFormState = {
+    companyNumber: string
+    companyName: string
+    website: string
+    category: string
+    contactName: string
+    contactPhone: string
+    contactEmail: string
+    contactDetails: string
+    ratingScore: string
+    ratingInfo: string
+    description: string
+}
 
 export default function AddSponsorModal() {
-    const formRef = React.useRef<FormInstance>(null)
     const [isCreationModalOpen, setIsCreationModalOpen] = useState(false)
+
+    const onFinish = async (values: CreateSponsorFormState) => {
+        const xujnia = {
+            companyNumber: values.companyNumber,
+            name: values.companyName,
+            website: values.website,
+            category: values.category,
+            contacts: [
+                {
+                    name: values.contactName,
+                    phone: values.contactPhone,
+                    email: values.contactEmail,
+                    info: values.contactDetails,
+                },
+            ],
+            description: values.description,
+            rating: { info: values.ratingInfo, score: values.ratingScore },
+        } as CreateSponsorRequest
+        await createSponsor(xujnia)
+    }
+
+    const [form] = Form.useForm()
+
     const onCategoryChange = (value: string) => {
         switch (value) {
-            case 'food':
-                formRef.current?.setFieldsValue({ note: '' })
+            case 'male':
+                form.setFieldsValue({ note: 'Hi, man!' })
                 break
-            case 'drinks':
-                formRef.current?.setFieldsValue({ note: '' })
+            case 'female':
+                form.setFieldsValue({ note: 'Hi, lady!' })
                 break
-            case 'toys':
-                formRef.current?.setFieldsValue({ note: '' })
+            case 'other':
+                form.setFieldsValue({ note: 'Hi there!' })
                 break
-            case 'condoms':
-                formRef.current?.setFieldsValue({ note: '' })
-                break
-            case 'unspecified':
-                formRef.current?.setFieldsValue({ note: '' })
-                break
+            default:
         }
     }
+
     return (
         <>
             <Modal
@@ -34,11 +68,15 @@ export default function AddSponsorModal() {
                 open={isCreationModalOpen}
                 centered={true}
                 onCancel={() => setIsCreationModalOpen(false)}
-                footer={[<Button key="create">Create</Button>]}
+                footer={[
+                    <Button key="create" onClick={form.submit}>
+                        Add
+                    </Button>,
+                ]}
             >
-                <Form ref={formRef} labelCol={{ span: 5 }}>
+                <Form labelCol={{ span: 5 }} onFinish={onFinish} form={form}>
                     <Form.Item
-                        name="companyCode"
+                        name="companyNumber"
                         label="Company code"
                         rules={[{ required: true }]}
                     >
@@ -68,34 +106,28 @@ export default function AddSponsorModal() {
                             onChange={onCategoryChange}
                             allowClear
                         >
-                            <Select.Option value="food">Food</Select.Option>
-                            <Select.Option value="drinks">Drinks</Select.Option>
-                            <Select.Option value="toys">Toys</Select.Option>
-                            <Select.Option value="condoms">
-                                Condoms
-                            </Select.Option>
-                            <Select.Option value="unspecified">
-                                Unspecified
-                            </Select.Option>
+                            <Select.Option value="male">male</Select.Option>
+                            <Select.Option value="female">female</Select.Option>
+                            <Select.Option value="other">other</Select.Option>
                         </Select>
                     </Form.Item>
                     <p>Primary contact information:</p>
                     <Form.Item
-                        name="name"
+                        name="contactName"
                         label="Name"
                         rules={[{ required: true }]}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        name="phone"
+                        name="contactPhone"
                         label="Phone"
                         rules={[{ required: true }]}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        name="email"
+                        name="contactEmail"
                         label="Email"
                         rules={[{ required: true }]}
                     >
@@ -109,12 +141,12 @@ export default function AddSponsorModal() {
                         <TextArea rows={2} />
                     </Form.Item>
                     <p>Additional information:</p>
-                    <Form.Item name="rating" label="Rating">
+                    <Form.Item name="ratingScore" label="Rating">
                         <Rate />
                     </Form.Item>
                     <Form.Item
-                        name="ratingDetails"
-                        label="Rating details"
+                        name="ratingInfo"
+                        label="Rating Info"
                         rules={[{ required: true }]}
                     >
                         <TextArea rows={2} />

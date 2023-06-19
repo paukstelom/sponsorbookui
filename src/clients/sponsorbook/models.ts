@@ -14,8 +14,13 @@ export type Eventer = {
 export type Sponsor = {
     _id: string
     name: string
+    website: string
+    companyNumber: string
     status: string
+    contacts: Contact[]
     description: string
+    rating: Rating
+    category: string
 }
 
 export type Rating = {
