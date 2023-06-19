@@ -1,16 +1,5 @@
 'use client'
-import {
-    Button,
-    Form,
-    FormInstance,
-    Input,
-    Modal,
-    Rate,
-    Select,
-    Table,
-} from 'antd'
-import SponsorLine, { Sponsor } from './sponsor'
-import { ColumnsType } from 'antd/es/table'
+import { Button, Form, FormInstance, Input, Modal, Rate, Select } from 'antd'
 import { useState } from 'react'
 import React from 'react'
 import TextArea from 'antd/es/input/TextArea'

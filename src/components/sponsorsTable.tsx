@@ -1,7 +1,6 @@
 'use client'
-import { Button, Form, FormInstance, Input, Modal, Select, Table } from 'antd'
+import { Button, Modal, Table } from 'antd'
 import SponsorLine, { Sponsor } from './sponsor'
-import { ColumnsType } from 'antd/es/table'
 import { useState } from 'react'
 import React from 'react'
 

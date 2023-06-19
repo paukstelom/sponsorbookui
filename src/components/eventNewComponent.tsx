@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { createEvent } from 'sponsorbook/clients/sponsorbook'
-import { Button, Form, Input, Modal, Row, Select } from 'antd'
+import { Button, Form, Input, Row, Select } from 'antd'
 import React from 'react'
 import TextArea from 'antd/es/input/TextArea'
 import { SubOrganization } from 'sponsorbook/clients/sponsorbook/models'

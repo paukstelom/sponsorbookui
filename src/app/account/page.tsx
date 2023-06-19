@@ -1,3 +1,3 @@
-export default function Account() {
+export default function AccountPage() {
     return <>Account here</>
 }
