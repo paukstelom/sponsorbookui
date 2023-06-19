@@ -1,10 +1,11 @@
 'use client'
-import { Button, Modal, Table } from 'antd'
+import { Button, Drawer, Modal, Table, Tag } from 'antd'
 import { useState } from 'react'
 import React from 'react'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 import { Sponsor } from 'sponsorbook/clients/sponsorbook/models'
 import { deleteOneSponsor } from 'sponsorbook/clients/sponsorbook'
+import { stat } from 'fs'
 
 export type SponsorTableProps = {
     sponsors: Sponsor[]
@@ -17,18 +18,36 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
     const columns = [
         { title: 'Company name', dataIndex: 'companyName', key: 'companyName' },
         { title: 'Category', dataIndex: 'category', key: 'category' },
-        { title: 'Status', dataIndex: 'status', key: 'status' },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            render: (status: string) => {
+                let color: string = ''
+                if (status === 'Available') {
+                    color = 'green'
+                } else if (status === 'Waiting') {
+                    color = 'yellow'
+                } else if (status === 'Not available') {
+                    color = 'volcano'
+                }
+                return (
+                    <Tag color={color} key={status}>
+                        {status}
+                    </Tag>
+                )
+            },
+        },
         { title: 'Email', dataIndex: 'email', key: 'email' },
         { title: 'Number', dataIndex: 'number', key: 'number' },
         { title: 'Rating', dataIndex: 'rating', key: 'rating' },
     ]
 
     const dataSource = sponsors.map((sponsor) => ({
-        key: sponsor._id,
         sponsor: sponsor,
         companyName: sponsor.name,
         category: sponsor.category,
-        status: 'Available',
+        status: sponsor.status,
         email: sponsor.contacts[0].email,
         number: sponsor.contacts[0].phone,
         rating: sponsor.rating.score,
@@ -44,9 +63,10 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
             cancelText: 'No',
             onOk() {
                 deleteOneSponsor(selectedSponsor!._id)
+                console.log('ok')
             },
             onCancel() {
-                console.log('Cancel')
+                console.log('cancel')
             },
         })
     }
@@ -54,7 +74,7 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
     return (
         <>
             <Modal
-                width="40%"
+                width="90%"
                 title={selectedSponsor?.name}
                 centered={true}
                 open={!!selectedSponsor}
@@ -73,23 +93,27 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
                     </Button>,
                 ]}
             >
-                <h6>Company number: {selectedSponsor?.companyNumber}</h6>
-                <h6>Category: {selectedSponsor?.category}</h6>
-                <h6>Website: {selectedSponsor?.website}</h6>
-                <h5>Contact details:</h5>
-                <h6>Name: {selectedSponsor?.contacts[0].name}</h6>
-                <h6>Phone: {selectedSponsor?.contacts[0].phone}</h6>
-                <h6>Email: {selectedSponsor?.contacts[0].email}</h6>
-                <h5>Other info:</h5>
-                <h6>Rating {selectedSponsor?.rating.score}</h6>
-                <h6>Desciprtion {selectedSponsor?.description}</h6>
+                <div style={{ height: '700px' }}>
+                    <h1>Company number: {selectedSponsor?.companyNumber}</h1>
+                    <h1>Category: {selectedSponsor?.category}</h1>
+                    <h1>Website: {selectedSponsor?.website}</h1>
+                    <h1>Contact details:</h1>
+                    <h1>Name: {selectedSponsor?.contacts[0].name}</h1>
+                    <h1>Phone: {selectedSponsor?.contacts[0].phone}</h1>
+                    <h1>Email: {selectedSponsor?.contacts[0].email}</h1>
+                    <h1>Other info:</h1>
+                    <h1>Rating {selectedSponsor?.rating.score}</h1>
+                    <h1>Desciprtion {selectedSponsor?.description}</h1>
+                </div>
             </Modal>
             <Table
+                style={{ height: '400px' }}
+                scroll={{ y: 400 }}
                 dataSource={dataSource}
                 columns={columns}
                 onRow={(record, rowIndex) => {
                     return {
-                        onClick: (event) => {
+                        onClick: () => {
                             setSelectedSponsor(record.sponsor)
                         }, // click row
                         onDoubleClick: (event) => {}, // double click row

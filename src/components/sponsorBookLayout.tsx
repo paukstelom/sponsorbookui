@@ -9,7 +9,7 @@ export const SponsorBookLayout = ({
     children: React.ReactNode
 }) => {
     return (
-        <Layout className="layout">
+        <Layout className="layout" style={{ height: '100vh' }}>
             <Navbar />
             <Content style={{ padding: '0 50px' }}>{children}</Content>
         </Layout>
