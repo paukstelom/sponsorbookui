@@ -1,27 +1,18 @@
-import { CreateOrganizationFormState } from 'sponsorbook/app/devpage/page'
 import { LoginFormState } from 'sponsorbook/app/login/page'
-import { Contact, Rating } from 'sponsorbook/app/sponsors/new/page'
+import {
+    CreateOrganizationRequest,
+    CreateSponsorRequest,
+} from 'sponsorbook/clients/sponsorbook/creationModels'
 
-const sponsorbookUrl = (path: string) => `http://127.0.0.1:8000${path}`
-
-export type CreateSponsorRequest = {
-    companyNumber: string
-    contacts: Contact[]
-    website: string
-    rating: Rating
-    name: string
-    category: string
-    description: string
-}
+const sponsorbookUrl = (path: string) => `http://localhost:3000/api${path}`
 
 export const login = (data: LoginFormState) =>
     fetch(sponsorbookUrl('/login'), {
         method: 'POST',
         body: JSON.stringify(data),
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json'}
+        headers: { 'Content-Type': 'application/json' },
     })
-
 
 export const createSponsor = (data: CreateSponsorRequest) =>
     fetch(sponsorbookUrl('/sponsors'), {
@@ -53,25 +44,24 @@ export const getOneSponsor = (sponsorId: string) =>
 export const getOneEvent = (eventId: string) =>
     fetch(sponsorbookUrl(`/events/${eventId}`), {
         next: { revalidate: 0 },
-    })    
+    })
 
 export const deleteOneEvent = (eventId: string) =>
     fetch(sponsorbookUrl(`/events/${eventId}`), {
         method: 'DELETE',
     })
 
-export const createOrganization = (data: CreateOrganizationFormState) =>
+export const createOrganization = (data: CreateOrganizationRequest) =>
     fetch(sponsorbookUrl('/organizations'), {
         method: 'POST',
         body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json'}
+        headers: { 'Content-Type': 'application/json' },
     })
 
-
 export const closeOneEvent = (eventId: string) =>
-fetch(sponsorbookUrl(`/events/${eventId}/close`), {
-        method: 'POST'
-})
+    fetch(sponsorbookUrl(`/events/${eventId}/close`), {
+        method: 'POST',
+    })
 
 export const deleteOneSponsor = (sponsorId: string) =>
     fetch(sponsorbookUrl(`/sponsors/${sponsorId}`), {

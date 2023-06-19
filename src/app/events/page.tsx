@@ -13,11 +13,9 @@ export default async function AllEventsPage() {
         (await subOrganizationData.json()) as SubOrganization[]
 
     return (
-        <>
-            <EventsPageComponent
-                events={events}
-                subOrganizations={subOrganizations}
-            />
-        </>
+        <EventsPageComponent
+            events={events}
+            subOrganizations={subOrganizations}
+        />
     )
 }

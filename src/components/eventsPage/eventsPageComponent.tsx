@@ -21,8 +21,6 @@ export default function EventsPageComponent({
 
     return (
         <>
-            {/* OPEN EVENT CREATION WINDOW */}
-
             <Modal
                 open={isCreationModalOpen}
                 footer={null}
@@ -31,8 +29,6 @@ export default function EventsPageComponent({
                 <NewEventForm subOrganizations={subOrganizations} />
             </Modal>
             <Button onClick={() => setIsCreationModalOpen(true)}>Create</Button>
-
-            {/* LIST OF EVENTS */}
 
             <h2>Ongoing</h2>
             <EventList
