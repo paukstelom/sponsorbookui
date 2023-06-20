@@ -37,6 +37,11 @@ export const getEvents = () =>
         next: { revalidate: 0 },
     })
 
+export const getCategories = () =>
+    fetch(sponsorbookUrl('/categories'), {
+        next: { revalidate: 0 },
+    })
+
 export const getOneSponsor = (sponsorId: string) =>
     fetch(sponsorbookUrl(`/sponsors/${sponsorId}`), {
         next: { revalidate: 0 },

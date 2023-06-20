@@ -11,7 +11,7 @@ export const SponsorBookLayout = ({
     return (
         <Layout className="layout" style={{ height: '100vh' }}>
             <Navbar />
-            <Content style={{ padding: '0 50px' }}>{children}</Content>
+            <Content style={{ padding: '100px' }}>{children}</Content>
         </Layout>
     )
 }

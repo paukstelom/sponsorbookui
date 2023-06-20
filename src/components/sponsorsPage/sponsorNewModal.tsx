@@ -5,6 +5,7 @@ import React from 'react'
 import TextArea from 'antd/es/input/TextArea'
 import { CreateSponsorRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
 import { createSponsor } from 'sponsorbook/clients/sponsorbook'
+import { Category } from 'sponsorbook/clients/sponsorbook/models'
 
 type CreateSponsorFormState = {
     companyNumber: string
@@ -20,7 +21,11 @@ type CreateSponsorFormState = {
     description: string
 }
 
-export default function AddSponsorModal() {
+export type AddSponsorModalProps = {
+    categories: Category[]
+}
+
+export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
     const [isCreationModalOpen, setIsCreationModalOpen] = useState(false)
 
     const onFinish = async (values: CreateSponsorFormState) => {
@@ -106,9 +111,14 @@ export default function AddSponsorModal() {
                             onChange={onCategoryChange}
                             allowClear
                         >
-                            <Select.Option value="male">male</Select.Option>
-                            <Select.Option value="female">female</Select.Option>
-                            <Select.Option value="other">other</Select.Option>
+                            {categories.map((category) => (
+                                <Select.Option
+                                    key={category.name}
+                                    value={category.name}
+                                >
+                                    {category.name}{' '}
+                                </Select.Option>
+                            ))}
                         </Select>
                     </Form.Item>
                     <p>Primary contact information:</p>
