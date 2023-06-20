@@ -1,5 +1,5 @@
 'use client'
-import { Button, Modal } from 'antd'
+import { Button, Form, Input, Modal } from 'antd'
 import React, { useState } from 'react'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 import { Sponsor } from 'sponsorbook/clients/sponsorbook/models'
@@ -7,11 +7,14 @@ import { deleteOneSponsor } from 'sponsorbook/clients/sponsorbook'
 
 export type SponsorModelProps = {
     sponsor: Sponsor | undefined
+    onCancel: () => void
 }
 
-export default function SponsorsDisplayModal({ sponsor }: SponsorModelProps) {
+export default function SponsorsDisplayModal({
+    sponsor,
+    onCancel,
+}: SponsorModelProps) {
     const { confirm } = Modal
-    const [selectedSponsor, setSelectedSponsor] = useState(sponsor)
 
     const showDeleteConfirm = () => {
         confirm({
@@ -36,13 +39,11 @@ export default function SponsorsDisplayModal({ sponsor }: SponsorModelProps) {
             <Modal
                 style={{ height: '900px' }}
                 width="90%"
-                title={sponsor?.name}
+                title=""
                 centered={true}
-                open={!!selectedSponsor}
+                open={!!sponsor}
                 onOk={() => console.log('pizdec')}
-                onCancel={() => {
-                    setSelectedSponsor(undefined)
-                }}
+                onCancel={onCancel}
                 footer={[
                     <Button key="connect">Connect</Button>,
                     <Button key="addContact">Add contact</Button>,
@@ -56,18 +57,67 @@ export default function SponsorsDisplayModal({ sponsor }: SponsorModelProps) {
                     </Button>,
                 ]}
             >
-                <div style={{ height: '700px' }}>
-                    <h6>Company number: {sponsor?.companyNumber}</h6>
-                    <h6>Category: {sponsor?.category}</h6>
-                    <h6>Website: {sponsor?.website}</h6>
-                    <h5>Contact details:</h5>
-                    <h6>Name: {sponsor?.contacts[0].name}</h6>
-                    <h6>Phone: {sponsor?.contacts[0].phone}</h6>
-                    <h6>Email: {sponsor?.contacts[0].email}</h6>
-                    <h5>Other info:</h5>
-                    <h6>Rating {sponsor?.rating.score}</h6>
-                    <h6>Desciprtion {sponsor?.description}</h6>
-                </div>
+                <Form labelCol={{ span: 6 }}>
+                    <h1>Main info:</h1>
+                    <Form.Item label="Company Name">
+                        <Input
+                            style={{ fontSize: '30px' }}
+                            value={sponsor?.name}
+                            bordered={false}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Company Number">
+                        <Input
+                            style={{ fontSize: '30px' }}
+                            value={sponsor?.companyNumber}
+                            bordered={false}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Category">
+                        <Input
+                            style={{ fontSize: '30px' }}
+                            value={sponsor?.category}
+                            bordered={false}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Website">
+                        <Input
+                            style={{ fontSize: '30px' }}
+                            value={sponsor?.website}
+                            bordered={false}
+                        />
+                    </Form.Item>
+                    <h1>Primary contact:</h1>
+                    <Form.Item label="Name">
+                        <Input
+                            style={{ fontSize: '30px' }}
+                            value={sponsor?.contacts[0].name}
+                            bordered={false}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Phone">
+                        <Input
+                            style={{ fontSize: '30px' }}
+                            value={sponsor?.contacts[0].phone}
+                            bordered={false}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Email">
+                        <Input
+                            style={{ fontSize: '30px' }}
+                            value={sponsor?.contacts[0].email}
+                            bordered={false}
+                        />
+                    </Form.Item>
+                    <h1>Other info:</h1>
+                    <Form.Item label="Description">
+                        <Input
+                            style={{ fontSize: '30px' }}
+                            value={sponsor?.description}
+                            bordered={false}
+                        />
+                    </Form.Item>
+                </Form>
             </Modal>
         </>
     )

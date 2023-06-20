@@ -63,7 +63,7 @@ export default function AddSponsorModal() {
     return (
         <>
             <Modal
-                width="40%"
+                width="90%"
                 title="Create new sponsor"
                 open={isCreationModalOpen}
                 centered={true}
