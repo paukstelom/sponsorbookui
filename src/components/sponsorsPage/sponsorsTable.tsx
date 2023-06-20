@@ -1,11 +1,10 @@
 'use client'
-import { Button, Drawer, Modal, Table, Tag } from 'antd'
+import { Modal, Table, Tag } from 'antd'
 import { useState } from 'react'
 import React from 'react'
-import { ExclamationCircleFilled } from '@ant-design/icons'
 import { Sponsor } from 'sponsorbook/clients/sponsorbook/models'
-import { deleteOneSponsor } from 'sponsorbook/clients/sponsorbook'
-import { stat } from 'fs'
+
+import SponsorsDisplayModal from './sponsorDisplayModal'
 
 export type SponsorTableProps = {
     sponsors: Sponsor[]
@@ -53,59 +52,9 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
         rating: sponsor.rating.score,
     }))
 
-    const showDeleteConfirm = () => {
-        confirm({
-            title: `Warning!`,
-            icon: <ExclamationCircleFilled />,
-            content: `Are you sure delete ${selectedSponsor?.name}?`,
-            okText: 'Yes',
-            okType: 'danger',
-            cancelText: 'No',
-            onOk() {
-                deleteOneSponsor(selectedSponsor!._id)
-                console.log('ok')
-            },
-            onCancel() {
-                console.log('cancel')
-            },
-        })
-    }
-
     return (
         <>
-            <Modal
-                width="90%"
-                title={selectedSponsor?.name}
-                centered={true}
-                open={!!selectedSponsor}
-                onOk={() => console.log('pizdec')}
-                onCancel={() => setSelectedSponsor(undefined)}
-                footer={[
-                    <Button key="connect">Connect</Button>,
-                    <Button key="addContact">Add contact</Button>,
-                    <Button key="editDetails">Edit details</Button>,
-                    <Button
-                        key="deleteSponsor"
-                        onClick={showDeleteConfirm}
-                        type="dashed"
-                    >
-                        Delete
-                    </Button>,
-                ]}
-            >
-                <div style={{ height: '700px' }}>
-                    <h1>Company number: {selectedSponsor?.companyNumber}</h1>
-                    <h1>Category: {selectedSponsor?.category}</h1>
-                    <h1>Website: {selectedSponsor?.website}</h1>
-                    <h1>Contact details:</h1>
-                    <h1>Name: {selectedSponsor?.contacts[0].name}</h1>
-                    <h1>Phone: {selectedSponsor?.contacts[0].phone}</h1>
-                    <h1>Email: {selectedSponsor?.contacts[0].email}</h1>
-                    <h1>Other info:</h1>
-                    <h1>Rating {selectedSponsor?.rating.score}</h1>
-                    <h1>Desciprtion {selectedSponsor?.description}</h1>
-                </div>
-            </Modal>
+            <SponsorsDisplayModal sponsor={selectedSponsor} />
             <Table
                 style={{ height: '400px' }}
                 scroll={{ y: 400 }}
