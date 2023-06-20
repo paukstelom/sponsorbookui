@@ -1,6 +1,7 @@
 import { LoginFormState } from 'sponsorbook/app/login/page'
 import {
     CreateCategoryRequest,
+    CreateEventFormState,
     CreateOrganizationRequest,
     CreateSponsorRequest,
 } from 'sponsorbook/clients/sponsorbook/creationModels'
@@ -36,6 +37,17 @@ export const getEvents = () =>
     fetch(sponsorbookUrl('/events'), {
         next: { revalidate: 0 },
     })
+
+export const getTickets = () =>
+    fetch(sponsorbookUrl('/tickets'), {
+        next: { revalidate: 0 },
+    })
+
+export const getTicketsForEvent = (eventId: string) =>
+    fetch(sponsorbookUrl(`/events/${eventId}/tickets`), {
+        next: { revalidate: 0 },
+    })
+
 
 export const getCategories = () =>
     fetch(sponsorbookUrl('/categories'), {
@@ -82,11 +94,6 @@ export const deleteOneSponsor = (sponsorId: string) =>
         method: 'DELETE',
     })
 
-export type CreateEventFormState = {
-    name: string
-    description: string
-    sub_organization_ids: string[]
-}
 
 export const createEvent = (data: CreateEventFormState) =>
     fetch(sponsorbookUrl('/events'), {

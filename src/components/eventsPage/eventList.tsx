@@ -1,7 +1,7 @@
 'use client'
 import { Card, List } from 'antd'
 import { useRouter } from 'next/navigation'
-import { Eventer } from './eventsPageComponent'
+import { Eventer } from 'sponsorbook/clients/sponsorbook/models'
 
 export type EventListProps = {
     events: Eventer[]

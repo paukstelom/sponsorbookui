@@ -4,6 +4,14 @@ export type SubOrganization = {
     description: string
 }
 
+export type Ticket = {
+    _id: string
+    name: string
+    status: string
+    description: string
+    eventId: string
+}
+
 export type Eventer = {
     _id: string
     name: string
