@@ -23,3 +23,9 @@ export type CreateCategoryRequest = {
     name: string
     info: string
 }
+
+export type CreateEventFormState = {
+    name: string
+    description: string
+    sub_organization_ids: string[]
+}
