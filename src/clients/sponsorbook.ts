@@ -5,6 +5,7 @@ import {
     CreateOrganizationRequest,
     CreateSponsorRequest,
 } from 'sponsorbook/clients/sponsorbook/creationModels'
+import { Sponsor } from './sponsorbook/models'
 
 const sponsorbookUrl = (path: string) => `http://localhost:3000/api${path}`
 
@@ -19,6 +20,13 @@ export const login = (data: LoginFormState) =>
 export const createSponsor = (data: CreateSponsorRequest) =>
     fetch(sponsorbookUrl('/sponsors'), {
         method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' },
+    })
+
+export const updateSponsor = (data: Sponsor) =>
+    fetch(sponsorbookUrl(`/sponsors/${data._id}`), {
+        method: 'PUT',
         body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' },
     })

@@ -29,6 +29,7 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
     const [isCreationModalOpen, setIsCreationModalOpen] = useState(false)
 
     const onFinish = async (values: CreateSponsorFormState) => {
+        
         const xujnia = {
             companyNumber: values.companyNumber,
             name: values.companyName,

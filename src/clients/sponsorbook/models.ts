@@ -48,3 +48,17 @@ export type Category = {
     name: string
     info: string
 }
+
+
+export type UpdateSponsorModel = {
+    _id: string
+    name: string
+    website: string
+    companyNumber: string
+    status: string
+    contacts: Contact[]
+    description: string
+    rating: Rating
+    category: string
+
+}
