@@ -1,3 +1,5 @@
-export default function History() {
-    return <>History here</>
+import HistoryPageComponent from 'sponsorbook/components/historyPage/historyPageComponent'
+
+export default async function HistoryPage() {
+    return <HistoryPageComponent />
 }

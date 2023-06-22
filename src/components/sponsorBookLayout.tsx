@@ -1,0 +1,17 @@
+'use client'
+import { Layout, Menu } from 'antd'
+import { Content, Header } from 'antd/es/layout/layout'
+import Navbar from './navbar'
+
+export const SponsorBookLayout = ({
+    children,
+}: {
+    children: React.ReactNode
+}) => {
+    return (
+        <Layout className="layout" style={{ height: '100vh' }}>
+            <Navbar />
+            <Content style={{ padding: '100px' }}>{children}</Content>
+        </Layout>
+    )
+}

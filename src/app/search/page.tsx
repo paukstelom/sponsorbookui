@@ -1,3 +1,5 @@
-export default function Search() {
-    return <>Search here</>
+import SearchPageComponent from 'sponsorbook/components/searchPage/searchPageComponent'
+
+export default async function SearchPage() {
+    return <SearchPageComponent />
 }
