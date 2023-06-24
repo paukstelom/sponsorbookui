@@ -5,8 +5,6 @@ import React from 'react'
 import { Sponsor } from 'sponsorbook/clients/sponsorbook/models'
 
 import SponsorsDisplayModal from './sponsorDisplayModal'
-import { ProColumns, ProTable, TableDropdown } from '@ant-design/pro-components'
-import { getSponsors } from 'sponsorbook/clients/sponsorbook'
 
 export type SponsorTableProps = {
     sponsors: Sponsor[]
@@ -16,7 +14,7 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
     const [selectedSponsor, setSelectedSponsor] = useState<Sponsor>()
 
     const { confirm } = Modal
-    const columner = [
+    const columns = [
         { title: 'Company name', dataIndex: 'companyName', key: 'companyName' },
         { title: 'Category', dataIndex: 'category', key: 'category' },
         {
@@ -54,56 +52,6 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
         rating: sponsor.rating.score,
     }))
 
-    type TableListSponsor = {
-        id: string;
-        companyName: string;
-        status: string;
-        email: string;
-        number: string;
-        rating: number;
-      };
-      const tableListDataSource: TableListSponsor[] = [];
-
-    const columns: ProColumns<TableListSponsor>[] = [
-        {
-          title: 'Copmany name',
-          width: 80,
-          dataIndex: 'name',
-          render: (_) => <a>{_}</a>,
-        },
-        {
-          title: 'Status',
-          width: 80,
-          dataIndex: 'status',
-          initialValue: 'all',
-          valueEnum: {
-            all: { text: 'Available', status: 'Default' },
-            close: { text: '关闭', status: 'Default' },
-            running: { text: '', status: 'Processing' },
-            online: { text: 'Available', status: 'Success' },
-            error: { text: '异常', status: 'Error' },
-          },
-        },
-        {
-            title: 'Number',
-            width: 80,
-            dataIndex: 'name',
-            render: (_) => <a>{_}</a>,
-          },
-          {
-            title: 'Email',
-            width: 80,
-            dataIndex: 'name',
-            render: (_) => <a>{_}</a>,
-          },
-        {
-            title: 'Rating',
-            width: 80,
-            dataIndex: 'rating',
-            sorter: (a, b) => a.rating - b.rating,
-          }
-      ];
-
     return (
         <>
             {!!selectedSponsor && (
@@ -112,11 +60,28 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
                     onCancel={() => setSelectedSponsor(undefined)}
                 />
             )}
-            <ProTable columns={columns} request={getSponsors}>
-
-            </ProTable>
-       
-       
+            <Table
+                style={{ height: '400px' }}
+                scroll={{ y: 400 }}
+                dataSource={dataSource}
+                columns={columns}
+                onRow={(record, rowIndex) => {
+                    return {
+                        onClick: () => {
+                            setSelectedSponsor(record.sponsor)
+                        }, // click row
+                        onDoubleClick: (event) => {}, // double click row
+                        onContextMenu: (event) => {}, // right button click row
+                        onMouseEnter: (event) => {}, // mouse enter row
+                        onMouseLeave: (event) => {}, // mouse leave row
+                    }
+                }}
+                onHeaderRow={(columns, index) => {
+                    return {
+                        onClick: () => {}, // click header row
+                    }
+                }}
+            ></Table>
         </>
     )
 }
