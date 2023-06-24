@@ -1,85 +1,107 @@
 'use client'
-import { Modal, Table, Tag } from 'antd'
 import { useState } from 'react'
 import React from 'react'
 import { Sponsor } from 'sponsorbook/clients/sponsorbook/models'
 
 import SponsorsDisplayModal from './sponsorDisplayModal'
+import { ProColumns, ProTable, TableDropdown } from '@ant-design/pro-components'
+import { getSponsors } from 'sponsorbook/clients/sponsorbook'
+import { isReturnStatement } from 'typescript'
 
 export type SponsorTableProps = {
     sponsors: Sponsor[]
 }
 
-export default function SponsorsTable({ sponsors }: SponsorTableProps) {
+export default function SponsorsTable() {
     const [selectedSponsor, setSelectedSponsor] = useState<Sponsor>()
 
-    const { confirm } = Modal
-    const columns = [
-        { title: 'Company name', dataIndex: 'companyName', key: 'companyName' },
-        { title: 'Category', dataIndex: 'category', key: 'category' },
-        {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-            render: (status: string) => {
-                let color: string = ''
-                if (status === 'Available') {
-                    color = 'green'
-                } else if (status === 'Waiting') {
-                    color = 'yellow'
-                } else if (status === 'Not available') {
-                    color = 'volcano'
-                }
-                return (
-                    <Tag color={color} key={status}>
-                        {status}
-                    </Tag>
-                )
-            },
-        },
-        { title: 'Email', dataIndex: 'email', key: 'email' },
-        { title: 'Number', dataIndex: 'number', key: 'number' },
-        { title: 'Rating', dataIndex: 'rating', key: 'rating' },
-    ]
 
-    const dataSource = sponsors.map((sponsor) => ({
-        sponsor: sponsor,
-        companyName: sponsor.name,
-        category: sponsor.category,
-        status: sponsor.status,
-        email: sponsor.contacts[0].email,
-        number: sponsor.contacts[0].phone,
-        rating: sponsor.rating.score,
-    }))
+    type TableListSponsor = {
+        id: string;
+        companyName: string;
+        status: string;
+        email: string;
+        number: string;
+        rating: number;
+      };
+
+    const columns: ProColumns<TableListSponsor>[] = [
+        {
+          title: 'Company name',
+          width: 80,
+          align: 'center',
+          dataIndex: 'companyName',
+          render: (_) => <a>{_}</a>,
+        },
+        {
+          title: 'Status',
+          width: 80,
+          align: 'center',
+          dataIndex: 'status',
+          initialValue: 'all',
+          valueEnum: {
+            all: { text: 'Available', status: 'Default' },
+            close: { text: '关闭', status: 'Default' },
+            running: { text: '', status: 'Processing' },
+            online: { text: 'Available', status: 'Success' },
+            error: { text: '异常', status: 'Error' },
+          },
+        },
+        {
+            title: 'Number',
+            align: 'center',
+            width: 80,
+            dataIndex: 'number',
+            render: (_) => <a>{_}</a>,
+          },
+          {
+            title: 'Email',
+            width: 80,
+            align: 'center',
+            dataIndex: 'email',
+            render: (_) => <a>{_}</a>,
+          },
+        {
+            title: 'Rating',
+            width: 80,
+            align: 'center',
+            dataIndex: 'rating',
+            sorter: (a, b) => a.rating - b.rating,
+          }
+      ];
+
+    const executeRequest = async ({filter}) => {
+        const result = await getSponsors()
+
+        const data = await result.json()
+
+        return {data, success: true}
+
+    }
 
     return (
         <>
-            {!!selectedSponsor && <SponsorsDisplayModal
-                sponsor={selectedSponsor}
-                onCancel={() => setSelectedSponsor(undefined)}
-            />}
-            <Table
-                style={{ height: '400px' }}
-                scroll={{ y: 400 }}
-                dataSource={dataSource}
-                columns={columns}
-                onRow={(record, rowIndex) => {
-                    return {
-                        onClick: () => {
-                            setSelectedSponsor(record.sponsor)
-                        }, // click row
-                        onDoubleClick: (event) => {}, // double click row
-                        onContextMenu: (event) => {}, // right button click row
-                        onMouseEnter: (event) => {}, // mouse enter row
-                        onMouseLeave: (event) => {}, // mouse leave row
-                    }
-                }}
-                onHeaderRow={(columns, index) => {
-                    return {
-                        onClick: () => {}, // click header row
-                    }
-                }}
-            ></Table>
+            {!!selectedSponsor && (
+                <SponsorsDisplayModal
+                    sponsor={selectedSponsor}
+                    onCancel={() => setSelectedSponsor(undefined)}
+                />
+            )}
+            <ProTable search={false}
+            columns={columns} request={executeRequest} postData={(data: Sponsor[]) => {
+                console.log(data)
+                return data.map((sponsor) => ( {
+                                                                id: sponsor._id,
+                                                                companyName: sponsor.name,
+                                                                status: sponsor.status,
+                                                                email: sponsor.contacts[0].email,
+                                                                number: sponsor.contacts[0].phone,
+                                                                rating: sponsor.rating.score
+                                                            })) as TableListSponsor[]}}>
+
+            </ProTable>
+       
+       
         </>
     )
 }

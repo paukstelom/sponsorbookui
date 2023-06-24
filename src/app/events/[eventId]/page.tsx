@@ -5,7 +5,6 @@ import {
 import { Ticket } from 'sponsorbook/clients/sponsorbook/models'
 import EventPageComponent from '../components/eventPageComponent'
 
-
 export default async function SingleEventPage({
     params,
 }: {

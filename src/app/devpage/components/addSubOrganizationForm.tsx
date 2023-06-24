@@ -10,9 +10,11 @@ export default function AddSubOrganizationFrom() {
 
     return (
         <>
-            <Form onFinish={onFinish}
-            labelCol={{ span: 7 }}
-            wrapperCol={{ span: 17 }}>
+            <Form
+                onFinish={onFinish}
+                labelCol={{ span: 7 }}
+                wrapperCol={{ span: 17 }}
+            >
                 <Form.Item
                     name="name"
                     label="Sub Organization Name"
@@ -27,7 +29,7 @@ export default function AddSubOrganizationFrom() {
                 >
                     <Input />
                 </Form.Item>
-              
+
                 <Button type="primary" htmlType="submit">
                     Add
                 </Button>

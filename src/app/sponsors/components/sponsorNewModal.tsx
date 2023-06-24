@@ -1,183 +1,164 @@
 'use client'
-import { Button, Form, Input, Modal, Rate, Select } from 'antd'
-import { useState } from 'react'
+import { Button, message } from 'antd'
 import React from 'react'
-import TextArea from 'antd/es/input/TextArea'
-import { CreateSponsorRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
-import { createSponsor } from 'sponsorbook/clients/sponsorbook'
 import { Category } from 'sponsorbook/clients/sponsorbook/models'
-
-type CreateSponsorFormState = {
-    companyNumber: string
-    companyName: string
-    website: string
-    category: string
-    contactName: string
-    contactPhone: string
-    contactEmail: string
-    contactDetails: string
-    ratingScore: string
-    ratingInfo: string
-    description: string
-}
+import {
+    ModalForm,
+    ProForm,
+    ProFormList,
+    ProFormRate,
+    ProFormSelect,
+    ProFormText,
+    ProFormTextArea,
+} from '@ant-design/pro-components'
+import { createSponsor } from 'sponsorbook/clients/sponsorbook'
+import { CreateSponsorRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
 
 export type AddSponsorModalProps = {
     categories: Category[]
 }
 
+const waitTime = (time: number = 100) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(true)
+        }, time)
+    })
+}
+
 export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
-    const [isCreationModalOpen, setIsCreationModalOpen] = useState(false)
-
-    const onFinish = async (values: CreateSponsorFormState) => {
-        
-        const xujnia = {
-            companyNumber: values.companyNumber,
-            name: values.companyName,
-            website: values.website,
-            category: values.category,
-            contacts: [
-                {
-                    name: values.contactName,
-                    phone: values.contactPhone,
-                    email: values.contactEmail,
-                    info: values.contactDetails,
-                },
-            ],
-            description: values.description,
-            rating: { info: values.ratingInfo, score: values.ratingScore },
-        } as CreateSponsorRequest
-        await createSponsor(xujnia)
-    }
-
-    const [form] = Form.useForm()
-
-    const onCategoryChange = (value: string) => {
-        switch (value) {
-            case 'male':
-                form.setFieldsValue({ note: 'Hi, man!' })
-                break
-            case 'female':
-                form.setFieldsValue({ note: 'Hi, lady!' })
-                break
-            case 'other':
-                form.setFieldsValue({ note: 'Hi there!' })
-                break
-            default:
-        }
-    }
 
     return (
-        <>
-            <Modal
-                width="90%"
-                title="Create new sponsor"
-                open={isCreationModalOpen}
-                centered={true}
-                onCancel={() => setIsCreationModalOpen(false)}
-                footer={[
-                    <Button key="create" onClick={form.submit}>
-                        Add
-                    </Button>,
-                ]}
+        <ModalForm
+            title="Add sponsor"
+            trigger={<Button type="primary">Add sponsor</Button>}
+            submitter={{
+                searchConfig: {
+                    submitText: 'Add',
+                },
+                submitButtonProps: {
+                    style: {
+                        display: 'solid',
+                    },
+                },
+                resetButtonProps: {
+                    style: {
+                        display: 'none',
+                    },
+                },
+            }}
+            onFinish={async (values: CreateSponsorRequest) => {
+                await waitTime(2000)
+                console.log(values)
+                await createSponsor(values)
+                message.success('Sponsor added!')
+            }}
+        >
+            <ProForm.Group>
+                <ProFormText
+                    width="md"
+                    name="companyNumber"
+                    label="Company Number"
+                    tooltip="Company number (Imonės kodas) can be found in Rekvizitai.lt"
+                    placeholder="Input a company number"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input a company number!',
+                        },
+                    ]}
+                />
+
+                <ProFormText
+                    width="md"
+                    name="name"
+                    label="Company Name"
+                    placeholder="Input a company name"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input a company name!',
+                        },
+                    ]}
+                />
+            </ProForm.Group>
+            <ProForm.Group>
+                <ProFormText
+                    width="md"
+                    name="website"
+                    label="Website"
+                    placeholder="Input a company website"
+                    
+                />
+                <ProFormSelect
+                    width="md"
+                    name="categories"
+                    label="Select categories"
+                    options={categories.map((category) => ({
+                        value: category.name,
+                        label: category.name,
+                    }))}
+                    fieldProps={{
+                        mode: 'multiple',
+                    }}
+                    placeholder="Select category"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please select atleast one category!',
+                            type: 'array',
+                        },
+                    ]}
+                />
+            </ProForm.Group>
+            <ProForm.Group>
+                <ProFormTextArea
+                    width="md"
+                    name={['rating', 'info']}
+                    label="Rating details"
+                    placeholder="Input rating details"
+                />
+                <ProFormRate name={['rating', 'score']} label="Rate" />
+            </ProForm.Group>
+            <ProForm.Group>
+                <ProFormTextArea
+                    width={500}
+                    name="description"
+                    label="Sponsors description/info"
+                    placeholder="Input companys description"
+                />
+            </ProForm.Group>
+            <ProFormList
+                name={'contacts'}
+                creatorButtonProps={{
+                    creatorButtonText: 'Add contact',
+                }}
+                label="Contacts"
+                alwaysShowItemLabel
             >
-                <Form labelCol={{ span: 5 }} onFinish={onFinish} form={form}>
-                    <Form.Item
-                        name="companyNumber"
-                        label="Company code"
-                        rules={[{ required: true }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="companyName"
-                        label="Company name"
-                        rules={[{ required: true }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="website"
-                        label="Website"
-                        rules={[{ required: true }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="category"
-                        label="Category"
-                        rules={[{ required: true }]}
-                    >
-                        <Select
-                            placeholder="Select an option"
-                            onChange={onCategoryChange}
-                            allowClear
-                        >
-                            {categories.map((category) => (
-                                <Select.Option
-                                    key={category.name}
-                                    value={category.name}
-                                >
-                                    {category.name}{' '}
-                                </Select.Option>
-                            ))}
-                        </Select>
-                    </Form.Item>
-                    <p>Primary contact information:</p>
-                    <Form.Item
-                        name="contactName"
+                <ProForm.Group key="group">
+                    <ProFormText
+                        width="md"
+                        name="name"
                         label="Name"
-                        rules={[{ required: true }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="contactPhone"
-                        label="Phone"
-                        rules={[{ required: true }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="contactEmail"
+                        placeholder="Input a full name"
+                    />
+
+                    <ProFormText
+                        width="md"
+                        name="phone"
+                        label="Number"
+                        placeholder="Input a number"
+                    />
+
+                    <ProFormText
+                        width="md"
+                        name="email"
                         label="Email"
-                        rules={[{ required: true }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="contactDetails"
-                        label="Details"
-                        rules={[{ required: true }]}
-                    >
-                        <TextArea rows={2} />
-                    </Form.Item>
-                    <p>Additional information:</p>
-                    <Form.Item name="ratingScore" label="Rating">
-                        <Rate />
-                    </Form.Item>
-                    <Form.Item
-                        name="ratingInfo"
-                        label="Rating Info"
-                        rules={[{ required: true }]}
-                    >
-                        <TextArea rows={2} />
-                    </Form.Item>
-                    <Form.Item
-                        name="description"
-                        label="Description"
-                        rules={[{ required: true }]}
-                    >
-                        <TextArea rows={2} />
-                    </Form.Item>
-                </Form>
-            </Modal>
-            <Button
-                onClick={(e) => setIsCreationModalOpen(true)}
-                type="primary"
-                style={{ marginBottom: 16 }}
-            >
-                Add sponsor
-            </Button>
-        </>
+                        placeholder="Input an email"
+                    />
+                </ProForm.Group>
+            </ProFormList>
+        </ModalForm>
     )
 }
