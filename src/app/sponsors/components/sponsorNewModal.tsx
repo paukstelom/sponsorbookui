@@ -1,6 +1,5 @@
 'use client'
-import { Button, Form, Input, Modal, Rate, Select, message } from 'antd'
-import { useState } from 'react'
+import { Button, message } from 'antd'
 import React from 'react'
 import { CreateSponsorRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
 import sponsorbook from 'sponsorbook/clients/sponsorbook'
@@ -14,7 +13,6 @@ import {
     ProFormText,
     ProFormTextArea,
 } from '@ant-design/pro-components'
-import { createSponsor } from 'sponsorbook/clients/sponsorbook'
 
 export type AddSponsorModalProps = {
     categories: Category[]
@@ -29,7 +27,6 @@ const waitTime = (time: number = 100) => {
 }
 
 export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
-
     return (
         <ModalForm
             title="Add sponsor"
@@ -90,7 +87,6 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
                     name="website"
                     label="Website"
                     placeholder="Input a company website"
-                    
                 />
                 <ProFormSelect
                     width="md"
