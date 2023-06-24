@@ -21,15 +21,13 @@ export default function AddSubOrganizationFrom() {
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    name="info"
-                    label="Info"
+                    name="description"
+                    label="Description"
                     rules={[{ required: true }]}
                 >
                     <Input />
                 </Form.Item>
-                <Form.Item>
-                    
-                </Form.Item>
+              
                 <Button type="primary" htmlType="submit">
                     Add
                 </Button>
