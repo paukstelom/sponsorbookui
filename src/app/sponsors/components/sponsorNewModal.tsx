@@ -1,6 +1,9 @@
 'use client'
-import { Button, message } from 'antd'
+import { Button, Form, Input, Modal, Rate, Select, message } from 'antd'
+import { useState } from 'react'
 import React from 'react'
+import { CreateSponsorRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
 import { Category } from 'sponsorbook/clients/sponsorbook/models'
 import {
     ModalForm,
@@ -12,7 +15,6 @@ import {
     ProFormTextArea,
 } from '@ant-design/pro-components'
 import { createSponsor } from 'sponsorbook/clients/sponsorbook'
-import { CreateSponsorRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
 
 export type AddSponsorModalProps = {
     categories: Category[]
@@ -50,7 +52,7 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
             onFinish={async (values: CreateSponsorRequest) => {
                 await waitTime(2000)
                 console.log(values)
-                await createSponsor(values)
+                await sponsorbook().createSponsor(values)
                 message.success('Sponsor added!')
             }}
         >

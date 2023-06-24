@@ -1,11 +1,11 @@
 'use client'
 import { Button, Form, Input } from 'antd'
-import { createCategory } from 'sponsorbook/clients/sponsorbook'
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
 import { CreateCategoryRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
 
 export default function AddSponsorCategoryForm() {
     const onFinish = async (values: CreateCategoryRequest) => {
-        await createCategory(values)
+        await sponsorbook().createCategory(values)
     }
 
     return (

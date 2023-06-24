@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { createEvent } from 'sponsorbook/clients/sponsorbook'
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
 import { Button, Form, Input, Row, Select } from 'antd'
 import React from 'react'
 import TextArea from 'antd/es/input/TextArea'
@@ -15,7 +15,7 @@ export default function NewEventForm({
     const router = useRouter()
 
     const onFinish = async (values: any) => {
-        await createEvent(values)
+        await sponsorbook().createEvent(values)
         router.push('/events')
     }
 
