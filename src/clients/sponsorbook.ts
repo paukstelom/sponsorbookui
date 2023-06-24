@@ -4,6 +4,7 @@ import {
     CreateEventFormState,
     CreateOrganizationRequest,
     CreateSponsorRequest,
+    CreateSubOrganizationRequest,
 } from 'sponsorbook/clients/sponsorbook/creationModels'
 import { Sponsor } from './sponsorbook/models'
 
@@ -91,6 +92,15 @@ export const createCategory = (data: CreateCategoryRequest) =>
         body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' },
     })
+
+
+export const createSubOrganization = (data: CreateSubOrganizationRequest) =>
+    fetch(sponsorbookUrl('/sub_organizations'), {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' },
+    })
+
 
 export const closeOneEvent = (eventId: string) =>
     fetch(sponsorbookUrl(`/events/${eventId}/close`), {

@@ -24,6 +24,13 @@ export type CreateCategoryRequest = {
     info: string
 }
 
+
+export type CreateSubOrganizationRequest = {
+    name: string
+    info: string
+    organization_id: string
+}
+
 export type CreateEventFormState = {
     name: string
     description: string

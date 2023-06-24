@@ -1,4 +1,5 @@
-import LoginPageComponent from 'sponsorbook/components/loginPage/loginPageComponent'
+import LoginPageComponent from "./components/loginPageComponent";
+
 
 export default async function LoginPage() {
     return <LoginPageComponent />

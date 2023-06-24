@@ -2,7 +2,7 @@
 import { Button, Form, Input, Modal } from 'antd'
 import React, { useState } from 'react'
 import { ExclamationCircleFilled } from '@ant-design/icons'
-import { Sponsor, UpdateSponsorModel } from 'sponsorbook/clients/sponsorbook/models'
+import { Sponsor } from 'sponsorbook/clients/sponsorbook/models'
 import { deleteOneSponsor, updateSponsor } from 'sponsorbook/clients/sponsorbook'
 
 export type SponsorModelProps = {

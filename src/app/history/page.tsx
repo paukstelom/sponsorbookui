@@ -1,4 +1,5 @@
-import HistoryPageComponent from 'sponsorbook/components/historyPage/historyPageComponent'
+import HistoryPageComponent from "./components/historyPageComponent";
+
 
 export default async function HistoryPage() {
     return <HistoryPageComponent />

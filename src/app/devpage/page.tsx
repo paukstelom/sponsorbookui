@@ -1,4 +1,4 @@
-import DevPageComponent from 'sponsorbook/components/devPage/devPageComponent'
+import DevPageComponent from "./components/devPageComponent";
 
 export default async function DevPage() {
     return <DevPageComponent />

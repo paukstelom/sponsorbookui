@@ -3,7 +3,7 @@ import {
     Eventer,
     SubOrganization,
 } from 'sponsorbook/clients/sponsorbook/models'
-import EventsPageComponent from 'sponsorbook/components/eventsPage/eventsPageComponent'
+import EventsPageComponent from './components/eventsPageComponent'
 
 export default async function AllEventsPage() {
     const eventData = await getEvents()
