@@ -28,12 +28,12 @@ export type Sponsor = {
     contacts: Contact[]
     description: string
     rating: Rating
-    category: string
+    categories: string[]
 }
 
 export type Rating = {
     info: string
-    score: string
+    score: number
 }
 
 export type Contact = {

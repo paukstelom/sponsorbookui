@@ -1,5 +1,4 @@
 'use client'
-import { Modal, Table, Tag } from 'antd'
 import { useState } from 'react'
 import React from 'react'
 import { Sponsor } from 'sponsorbook/clients/sponsorbook/models'
@@ -7,52 +6,15 @@ import { Sponsor } from 'sponsorbook/clients/sponsorbook/models'
 import SponsorsDisplayModal from './sponsorDisplayModal'
 import { ProColumns, ProTable, TableDropdown } from '@ant-design/pro-components'
 import { getSponsors } from 'sponsorbook/clients/sponsorbook'
+import { isReturnStatement } from 'typescript'
 
 export type SponsorTableProps = {
     sponsors: Sponsor[]
 }
 
-export default function SponsorsTable({ sponsors }: SponsorTableProps) {
+export default function SponsorsTable() {
     const [selectedSponsor, setSelectedSponsor] = useState<Sponsor>()
 
-    const { confirm } = Modal
-    const columner = [
-        { title: 'Company name', dataIndex: 'companyName', key: 'companyName' },
-        { title: 'Category', dataIndex: 'category', key: 'category' },
-        {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-            render: (status: string) => {
-                let color: string = ''
-                if (status === 'Available') {
-                    color = 'green'
-                } else if (status === 'Waiting') {
-                    color = 'yellow'
-                } else if (status === 'Not available') {
-                    color = 'volcano'
-                }
-                return (
-                    <Tag color={color} key={status}>
-                        {status}
-                    </Tag>
-                )
-            },
-        },
-        { title: 'Email', dataIndex: 'email', key: 'email' },
-        { title: 'Number', dataIndex: 'number', key: 'number' },
-        { title: 'Rating', dataIndex: 'rating', key: 'rating' },
-    ]
-
-    const dataSource = sponsors.map((sponsor) => ({
-        sponsor: sponsor,
-        companyName: sponsor.name,
-        category: sponsor.category,
-        status: sponsor.status,
-        email: sponsor.contacts[0].email,
-        number: sponsor.contacts[0].phone,
-        rating: sponsor.rating.score,
-    }))
 
     type TableListSponsor = {
         id: string;
@@ -62,18 +24,19 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
         number: string;
         rating: number;
       };
-      const tableListDataSource: TableListSponsor[] = [];
 
     const columns: ProColumns<TableListSponsor>[] = [
         {
-          title: 'Copmany name',
+          title: 'Company name',
           width: 80,
-          dataIndex: 'name',
+          align: 'center',
+          dataIndex: 'companyName',
           render: (_) => <a>{_}</a>,
         },
         {
           title: 'Status',
           width: 80,
+          align: 'center',
           dataIndex: 'status',
           initialValue: 'all',
           valueEnum: {
@@ -86,23 +49,35 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
         },
         {
             title: 'Number',
+            align: 'center',
             width: 80,
-            dataIndex: 'name',
+            dataIndex: 'number',
             render: (_) => <a>{_}</a>,
           },
           {
             title: 'Email',
             width: 80,
-            dataIndex: 'name',
+            align: 'center',
+            dataIndex: 'email',
             render: (_) => <a>{_}</a>,
           },
         {
             title: 'Rating',
             width: 80,
+            align: 'center',
             dataIndex: 'rating',
             sorter: (a, b) => a.rating - b.rating,
           }
       ];
+
+    const executeRequest = async ({filter}) => {
+        const result = await getSponsors()
+
+        const data = await result.json()
+
+        return {data, success: true}
+
+    }
 
     return (
         <>
@@ -112,7 +87,17 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
                     onCancel={() => setSelectedSponsor(undefined)}
                 />
             )}
-            <ProTable columns={columns} request={getSponsors}>
+            <ProTable search={false}
+            columns={columns} request={executeRequest} postData={(data: Sponsor[]) => {
+                console.log(data)
+                return data.map((sponsor) => ( {
+                                                                id: sponsor._id,
+                                                                companyName: sponsor.name,
+                                                                status: sponsor.status,
+                                                                email: sponsor.contacts[0].email,
+                                                                number: sponsor.contacts[0].phone,
+                                                                rating: sponsor.rating.score
+                                                            })) as TableListSponsor[]}}>
 
             </ProTable>
        
