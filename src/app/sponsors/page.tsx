@@ -5,6 +5,8 @@ import React from 'react'
 import { Category, Sponsor } from 'sponsorbook/clients/sponsorbook/models'
 import SponsorPageComponent from './components/sponsorPageComponent'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AllSponsorsPage() {
     const sponsorData = await getSponsors()
     const sponsors = (await sponsorData.json()) as Sponsor[]

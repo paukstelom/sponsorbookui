@@ -5,6 +5,8 @@ import {
 } from 'sponsorbook/clients/sponsorbook/models'
 import EventsPageComponent from './components/eventsPageComponent'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AllEventsPage() {
     const eventData = await getEvents()
     const subOrganizationData = await getSubOrgs()
