@@ -10,9 +10,11 @@ export default function AddSponsorCategoryForm() {
 
     return (
         <>
-            <Form onFinish={onFinish}
-            labelCol={{ span: 7 }}
-            wrapperCol={{ span: 17 }}>
+            <Form
+                onFinish={onFinish}
+                labelCol={{ span: 7 }}
+                wrapperCol={{ span: 17 }}
+            >
                 <Form.Item
                     name="name"
                     label="Category name"

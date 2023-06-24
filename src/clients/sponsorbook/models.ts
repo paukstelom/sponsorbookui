@@ -43,9 +43,7 @@ export type Contact = {
     info: string
 }
 
-
 export type Category = {
     name: string
     info: string
 }
-

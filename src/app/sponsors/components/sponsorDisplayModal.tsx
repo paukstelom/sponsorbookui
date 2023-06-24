@@ -3,7 +3,10 @@ import { Button, Form, Input, Modal } from 'antd'
 import React, { useState } from 'react'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 import { Sponsor } from 'sponsorbook/clients/sponsorbook/models'
-import { deleteOneSponsor, updateSponsor } from 'sponsorbook/clients/sponsorbook'
+import {
+    deleteOneSponsor,
+    updateSponsor,
+} from 'sponsorbook/clients/sponsorbook'
 
 export type SponsorModelProps = {
     sponsor: Sponsor | undefined
@@ -16,7 +19,7 @@ export default function SponsorsDisplayModal({
 }: SponsorModelProps) {
     const { confirm } = Modal
     const [editMode, setEditMode] = useState(false)
-    
+
     const [form] = Form.useForm()
 
     const exitModal = () => {
@@ -42,7 +45,6 @@ export default function SponsorsDisplayModal({
         })
     }
 
- 
     const saveDetails = async (values: any) => {
         setEditMode(false)
         console.log(values)
@@ -61,16 +63,16 @@ export default function SponsorsDisplayModal({
                 },
             ],
             description: values.description,
-            rating: { info: 'RATING INFO NOT IMPLEMENTED', score: 'SCORE INFO NOT IMPLEMENTED' },
+            rating: {
+                info: 'RATING INFO NOT IMPLEMENTED',
+                score: 'SCORE INFO NOT IMPLEMENTED',
+            },
         } as Sponsor
         await updateSponsor(data)
     }
 
-    
-
     return (
         <>
-        
             <Modal
                 style={{ height: '900px' }}
                 width="90%"
@@ -82,9 +84,18 @@ export default function SponsorsDisplayModal({
                 footer={[
                     <Button key="connect">Connect</Button>,
                     <Button key="addContact">Add contact</Button>,
-                    editMode ? 
-                    (<Button onClick={() => form.submit() } key="saveDetails">Save</Button>) : 
-                    (<Button key="editDetails" onClick={() => setEditMode(true)}>Edit Details</Button>),
+                    editMode ? (
+                        <Button onClick={() => form.submit()} key="saveDetails">
+                            Save
+                        </Button>
+                    ) : (
+                        <Button
+                            key="editDetails"
+                            onClick={() => setEditMode(true)}
+                        >
+                            Edit Details
+                        </Button>
+                    ),
                     <Button
                         key="deleteSponsor"
                         onClick={showDeleteConfirm}
@@ -94,11 +105,13 @@ export default function SponsorsDisplayModal({
                     </Button>,
                 ]}
             >
-            
                 <Form labelCol={{ span: 6 }} form={form} onFinish={saveDetails}>
                     <h1>Main info:</h1>
-                    <Form.Item label="Company Name" 
-                            name='companyName' initialValue={sponsor?.name}>
+                    <Form.Item
+                        label="Company Name"
+                        name="companyName"
+                        initialValue={sponsor?.name}
+                    >
                         <Input
                             style={{ fontSize: '30px' }}
                             value={sponsor?.name}
@@ -106,7 +119,11 @@ export default function SponsorsDisplayModal({
                             disabled={!editMode}
                         />
                     </Form.Item>
-                    <Form.Item label="Company Number" name='companyNumber' initialValue={sponsor?.companyNumber}>
+                    <Form.Item
+                        label="Company Number"
+                        name="companyNumber"
+                        initialValue={sponsor?.companyNumber}
+                    >
                         <Input
                             style={{ fontSize: '30px' }}
                             value={sponsor?.companyNumber}
@@ -114,7 +131,11 @@ export default function SponsorsDisplayModal({
                             disabled={!editMode}
                         />
                     </Form.Item>
-                    <Form.Item label="Category" name='category' initialValue={sponsor?.category}>
+                    <Form.Item
+                        label="Category"
+                        name="category"
+                        initialValue={sponsor?.category}
+                    >
                         <Input
                             style={{ fontSize: '30px' }}
                             value={sponsor?.category}
@@ -122,7 +143,11 @@ export default function SponsorsDisplayModal({
                             disabled={!editMode}
                         />
                     </Form.Item>
-                    <Form.Item label="Website" name='website' initialValue={sponsor?.website}>
+                    <Form.Item
+                        label="Website"
+                        name="website"
+                        initialValue={sponsor?.website}
+                    >
                         <Input
                             style={{ fontSize: '30px' }}
                             value={sponsor?.website}
@@ -131,7 +156,11 @@ export default function SponsorsDisplayModal({
                         />
                     </Form.Item>
                     <h1>Primary contact:</h1>
-                    <Form.Item label="Name" name='contactName' initialValue={sponsor?.contacts[0].name}>
+                    <Form.Item
+                        label="Name"
+                        name="contactName"
+                        initialValue={sponsor?.contacts[0].name}
+                    >
                         <Input
                             style={{ fontSize: '30px' }}
                             value={sponsor?.contacts[0].name}
@@ -139,7 +168,11 @@ export default function SponsorsDisplayModal({
                             disabled={!editMode}
                         />
                     </Form.Item>
-                    <Form.Item label="Phone" name='phone' initialValue={sponsor?.contacts[0].phone}>
+                    <Form.Item
+                        label="Phone"
+                        name="phone"
+                        initialValue={sponsor?.contacts[0].phone}
+                    >
                         <Input
                             style={{ fontSize: '30px' }}
                             value={sponsor?.contacts[0].phone}
@@ -147,7 +180,11 @@ export default function SponsorsDisplayModal({
                             disabled={!editMode}
                         />
                     </Form.Item>
-                    <Form.Item label="Email" name='email' initialValue={sponsor?.contacts[0].email}>
+                    <Form.Item
+                        label="Email"
+                        name="email"
+                        initialValue={sponsor?.contacts[0].email}
+                    >
                         <Input
                             style={{ fontSize: '30px' }}
                             value={sponsor?.contacts[0].email}
@@ -156,7 +193,11 @@ export default function SponsorsDisplayModal({
                         />
                     </Form.Item>
                     <h1>Other info:</h1>
-                    <Form.Item label="Description" name='description' initialValue={sponsor?.description}>
+                    <Form.Item
+                        label="Description"
+                        name="description"
+                        initialValue={sponsor?.description}
+                    >
                         <Input
                             style={{ fontSize: '30px' }}
                             value={sponsor?.description}
@@ -169,4 +210,3 @@ export default function SponsorsDisplayModal({
         </>
     )
 }
-

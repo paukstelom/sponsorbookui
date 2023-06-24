@@ -54,10 +54,12 @@ export default function SponsorsTable({ sponsors }: SponsorTableProps) {
 
     return (
         <>
-            {!!selectedSponsor && <SponsorsDisplayModal
-                sponsor={selectedSponsor}
-                onCancel={() => setSelectedSponsor(undefined)}
-            />}
+            {!!selectedSponsor && (
+                <SponsorsDisplayModal
+                    sponsor={selectedSponsor}
+                    onCancel={() => setSelectedSponsor(undefined)}
+                />
+            )}
             <Table
                 style={{ height: '400px' }}
                 scroll={{ y: 400 }}

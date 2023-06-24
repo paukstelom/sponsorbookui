@@ -24,7 +24,6 @@ export type CreateCategoryRequest = {
     info: string
 }
 
-
 export type CreateSubOrganizationRequest = {
     name: string
     description: string
