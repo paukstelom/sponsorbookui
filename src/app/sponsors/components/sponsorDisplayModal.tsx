@@ -1,12 +1,9 @@
 'use client'
-import { Button, Form, Input, Modal } from 'antd'
+import { Button, Form, Input, Modal, Select } from 'antd'
 import React, { useState } from 'react'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 import { Sponsor } from 'sponsorbook/clients/sponsorbook/models'
-import {
-    deleteOneSponsor,
-    updateSponsor,
-} from 'sponsorbook/clients/sponsorbook'
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
 
 export type SponsorModelProps = {
     sponsor: Sponsor | undefined
@@ -36,7 +33,7 @@ export default function SponsorsDisplayModal({
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                deleteOneSponsor(sponsor!._id)
+                sponsorbook().deleteOneSponsor(sponsor!._id)
                 console.log('ok')
             },
             onCancel() {
@@ -53,7 +50,8 @@ export default function SponsorsDisplayModal({
             companyNumber: values.companyNumber,
             name: values.companyName,
             website: values.website,
-            category: values.category,
+            status: values.status,
+            categories: values.categories,
             contacts: [
                 {
                     name: values.contactName,
@@ -65,10 +63,10 @@ export default function SponsorsDisplayModal({
             description: values.description,
             rating: {
                 info: 'RATING INFO NOT IMPLEMENTED',
-                score: 'SCORE INFO NOT IMPLEMENTED',
+                score: 2.5,
             },
         } as Sponsor
-        await updateSponsor(data)
+        await sponsorbook().updateSponsor(data)
     }
 
     return (
@@ -134,11 +132,11 @@ export default function SponsorsDisplayModal({
                     <Form.Item
                         label="Category"
                         name="category"
-                        initialValue={sponsor?.category}
+                        initialValue={sponsor?.categories}
                     >
-                        <Input
+                        <Select
                             style={{ fontSize: '30px' }}
-                            value={sponsor?.category}
+                            value={sponsor?.categories}
                             bordered={false}
                             disabled={!editMode}
                         />

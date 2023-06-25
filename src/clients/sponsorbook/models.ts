@@ -45,6 +45,7 @@ export type Contact = {
 }
 
 export type Category = {
+    _id: string
     name: string
     info: string
 }

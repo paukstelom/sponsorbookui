@@ -34,22 +34,18 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
             submitter={{
                 searchConfig: {
                     submitText: 'Add',
+                    resetText: 'Reset',
                 },
                 submitButtonProps: {
                     style: {
                         display: 'solid',
                     },
                 },
-                resetButtonProps: {
-                    style: {
-                        display: 'none',
-                    },
-                },
             }}
             onFinish={async (values: CreateSponsorRequest) => {
-                await waitTime(2000)
                 console.log(values)
                 await sponsorbook().createSponsor(values)
+                await waitTime(2000)
                 message.success('Sponsor added!')
             }}
         >
@@ -60,6 +56,7 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
                     label="Company Number"
                     tooltip="Company number (Imonės kodas) can be found in Rekvizitai.lt"
                     placeholder="Input a company number"
+                    initialValue={'121212121212'}
                     rules={[
                         {
                             required: true,
@@ -73,6 +70,7 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
                     name="name"
                     label="Company Name"
                     placeholder="Input a company name"
+                    initialValue={'Hustlers University'}
                     rules={[
                         {
                             required: true,
@@ -87,19 +85,21 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
                     name="website"
                     label="Website"
                     placeholder="Input a company website"
+                    initialValue={'website.com'}
                 />
                 <ProFormSelect
                     width="md"
                     name="categories"
                     label="Select categories"
                     options={categories.map((category) => ({
-                        value: category.name,
+                        value: category._id,
                         label: category.name,
                     }))}
                     fieldProps={{
                         mode: 'multiple',
                     }}
                     placeholder="Select category"
+                    initialValue={[]}
                     rules={[
                         {
                             required: true,
@@ -115,8 +115,13 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
                     name={['rating', 'info']}
                     label="Rating details"
                     placeholder="Input rating details"
+                    initialValue={''}
                 />
-                <ProFormRate name={['rating', 'score']} label="Rate" />
+                <ProFormRate
+                    name={['rating', 'score']}
+                    label="Rate"
+                    initialValue={2.5}
+                />
             </ProForm.Group>
             <ProForm.Group>
                 <ProFormTextArea
@@ -124,6 +129,7 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
                     name="description"
                     label="Sponsors description/info"
                     placeholder="Input companys description"
+                    initialValue={''}
                 />
             </ProForm.Group>
             <ProFormList
@@ -140,6 +146,7 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
                         name="name"
                         label="Name"
                         placeholder="Input a full name"
+                        initialValue={'Jonas Batonas'}
                     />
 
                     <ProFormText
@@ -147,6 +154,7 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
                         name="phone"
                         label="Number"
                         placeholder="Input a number"
+                        initialValue={'+37061066666'}
                     />
 
                     <ProFormText
@@ -154,6 +162,7 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
                         name="email"
                         label="Email"
                         placeholder="Input an email"
+                        initialValue={'vardaitis@pavardaitis.com'}
                     />
                 </ProForm.Group>
             </ProFormList>

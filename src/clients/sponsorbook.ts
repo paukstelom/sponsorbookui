@@ -14,6 +14,7 @@ const defaultConfig = ({ cookie }: CustomConfig = {}) => ({
     cookie,
     cache: 'no-store' as 'no-store',
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include' as 'include',
 })
 
 export type CustomConfig = {
@@ -25,7 +26,6 @@ const sponsorbook = (config: CustomConfig = {}) => ({
         fetch(sponsorbookUrl('/login'), {
             method: 'POST',
             body: JSON.stringify(data),
-            credentials: 'include',
             ...defaultConfig(config),
         }),
     createSponsor: async (data: CreateSponsorRequest) =>
