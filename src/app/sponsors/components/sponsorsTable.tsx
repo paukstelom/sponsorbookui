@@ -87,10 +87,7 @@ export default function SponsorsTable({ categories }: SponsorTableProps) {
             align: 'center',
             valueType: 'rate',
             render: () => [
-                <Button
-                    key=""
-                    onClick={(event) => router.push(`/sponsors/${sponsor.id}`)}
-                >
+                <Button key="" onClick={(event) => router.push(`/sponsors/ha`)}>
                     Open
                 </Button>,
                 <Button key=" ">Expand</Button>,
