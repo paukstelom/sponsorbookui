@@ -10,98 +10,97 @@ import { Sponsor } from './sponsorbook/models'
 
 const sponsorbookUrl = (path: string) => `http://localhost:3000/api${path}`
 
-const defaultConfig = {
+const defaultConfig = ({ cookie }: CustomConfig = {}) => ({
+    cookie,
     cache: 'no-store' as 'no-store',
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include' as 'include',
+})
+
+export type CustomConfig = {
+    cookie?: string
 }
 
-export const login = (data: LoginRequest) =>
-    fetch(sponsorbookUrl('/login'), {
-        method: 'POST',
-        body: JSON.stringify(data),
-        credentials: 'include',
-        ...defaultConfig,
-    })
+const sponsorbook = (config: CustomConfig = {}) => ({
+    login: async (data: LoginRequest) =>
+        fetch(sponsorbookUrl('/login'), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
+    createSponsor: async (data: CreateSponsorRequest) =>
+        fetch(sponsorbookUrl('/sponsors'), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
+    updateSponsor: async (data: Sponsor) =>
+        fetch(sponsorbookUrl(`/sponsors/${data._id}`), {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
 
-export const createSponsor = (data: CreateSponsorRequest) =>
-    fetch(sponsorbookUrl('/sponsors'), {
-        method: 'POST',
-        body: JSON.stringify(data),
-        ...defaultConfig,
-    })
+    getSubOrgs: async () =>
+        fetch(sponsorbookUrl('/sub_organizations'), defaultConfig(config)),
 
-export const updateSponsor = (data: Sponsor) =>
-    fetch(sponsorbookUrl(`/sponsors/${data._id}`), {
-        method: 'PUT',
-        body: JSON.stringify(data),
-        ...defaultConfig,
-    })
+    getSponsors: async () =>
+        fetch(sponsorbookUrl('/sponsors'), defaultConfig(config)),
+    getEvents: async () =>
+        fetch(sponsorbookUrl('/events'), defaultConfig(config)),
+    getTickets: async () =>
+        fetch(sponsorbookUrl('/tickets'), defaultConfig(config)),
+    getTicketsForEvent: async (eventId: string) =>
+        fetch(
+            sponsorbookUrl(`/events/${eventId}/tickets`),
+            defaultConfig(config)
+        ),
+    getCategories: async () =>
+        fetch(sponsorbookUrl('/categories'), defaultConfig(config)),
+    getOneSponsor: async (sponsorId: string) =>
+        fetch(sponsorbookUrl(`/sponsors/${sponsorId}`), defaultConfig(config)),
 
-export const getSubOrgs = () =>
-    fetch(sponsorbookUrl('/sub_organizations'), defaultConfig)
+    getOneEvent: async (eventId: string) =>
+        fetch(sponsorbookUrl(`/events/${eventId}`), defaultConfig(config)),
+    deleteOneEvent: async (eventId: string) =>
+        fetch(sponsorbookUrl(`/events/${eventId}`), {
+            method: 'DELETE',
+            ...defaultConfig(config),
+        }),
+    createOrganization: async (data: CreateOrganizationRequest) =>
+        fetch(sponsorbookUrl('/organizations'), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
+    createCategory: async (data: CreateCategoryRequest) =>
+        fetch(sponsorbookUrl('/categories'), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
+    createSubOrganization: async (data: CreateSubOrganizationRequest) =>
+        fetch(sponsorbookUrl('/sub_organizations'), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
+    closeOneEvent: async (eventId: string) =>
+        fetch(sponsorbookUrl(`/events/${eventId}/close`), {
+            method: 'POST',
+            ...defaultConfig(config),
+        }),
+    deleteOneSponsor: async (sponsorId: string) =>
+        fetch(sponsorbookUrl(`/sponsors/${sponsorId}`), {
+            method: 'DELETE',
+            ...defaultConfig(config),
+        }),
+    createEvent: async (data: CreateEventFormState) =>
+        fetch(sponsorbookUrl('/events'), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
+})
 
-export const getSponsors = () =>
-    fetch(sponsorbookUrl('/sponsors'), defaultConfig)
-
-export const getEvents = () => fetch(sponsorbookUrl('/events'), defaultConfig)
-export const getTickets = () => fetch(sponsorbookUrl('/tickets'), defaultConfig)
-
-export const getTicketsForEvent = (eventId: string) =>
-    fetch(sponsorbookUrl(`/events/${eventId}/tickets`), defaultConfig)
-
-export const getCategories = () =>
-    fetch(sponsorbookUrl('/categories'), defaultConfig)
-
-export const getOneSponsor = (sponsorId: string) =>
-    fetch(sponsorbookUrl(`/sponsors/${sponsorId}`), defaultConfig)
-
-export const getOneEvent = (eventId: string) =>
-    fetch(sponsorbookUrl(`/events/${eventId}`), defaultConfig)
-
-export const deleteOneEvent = (eventId: string) =>
-    fetch(sponsorbookUrl(`/events/${eventId}`), {
-        method: 'DELETE',
-    })
-
-export const createOrganization = (data: CreateOrganizationRequest) =>
-    fetch(sponsorbookUrl('/organizations'), {
-        method: 'POST',
-        body: JSON.stringify(data),
-        ...defaultConfig,
-    })
-
-
-export const createCategory = (data: CreateCategoryRequest) =>
-    fetch(sponsorbookUrl('/categories'), {
-        method: 'POST',
-        body: JSON.stringify(data),
-        ...defaultConfig,
-    })
-
-
-export const createSubOrganization = (data: CreateSubOrganizationRequest) =>
-    fetch(sponsorbookUrl('/sub_organizations'), {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' },
-    })
-
-
-export const closeOneEvent = (eventId: string) =>
-    fetch(sponsorbookUrl(`/events/${eventId}/close`), {
-        method: 'POST',
-        ...defaultConfig,
-    })
-
-export const deleteOneSponsor = (sponsorId: string) =>
-    fetch(sponsorbookUrl(`/sponsors/${sponsorId}`), {
-        method: 'DELETE',
-        ...defaultConfig,
-    })
-
-export const createEvent = (data: CreateEventFormState) =>
-    fetch(sponsorbookUrl('/events'), {
-        method: 'POST',
-        body: JSON.stringify(data),
-        ...defaultConfig,
-    })
+export default sponsorbook

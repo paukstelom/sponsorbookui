@@ -1,7 +1,7 @@
 'use client'
 import { Button, Checkbox, Form, Input } from 'antd'
 import { LoginRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
-import { login } from 'sponsorbook/clients/sponsorbook'
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
 import { useRouter } from 'next/navigation'
 
 const onFinishFailed = (errorInfo: any) => {
@@ -12,7 +12,7 @@ export default function LoginForm() {
     const router = useRouter()
 
     const onFinish = async (values: LoginRequest) => {
-        await login(values)
+        await sponsorbook().login(values)
         router.push('/events')
     }
 

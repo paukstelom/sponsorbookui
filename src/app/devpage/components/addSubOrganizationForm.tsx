@@ -1,11 +1,11 @@
 'use client'
 import { Button, Form, Input } from 'antd'
-import { createSubOrganization } from 'sponsorbook/clients/sponsorbook'
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
 import { CreateSubOrganizationRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
 
 export default function AddSubOrganizationFrom() {
     const onFinish = async (values: CreateSubOrganizationRequest) => {
-        await createSubOrganization(values)
+        await sponsorbook().createSubOrganization(values)
     }
 
     return (

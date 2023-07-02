@@ -9,8 +9,8 @@ import {
     ProFormText,
     ProFormTextArea,
 } from '@ant-design/pro-components'
-import { createEvent } from 'sponsorbook/clients/sponsorbook'
 import { CreateEventFormState } from 'sponsorbook/clients/sponsorbook/creationModels'
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
 
 export type AddSponsorModalProps = {
     subOrganizations: SubOrganization[]
@@ -24,8 +24,9 @@ const waitTime = (time: number = 100) => {
     })
 }
 
-export default function AddEventModal({ subOrganizations }: AddSponsorModalProps) {
-
+export default function AddEventModal({
+    subOrganizations,
+}: AddSponsorModalProps) {
     return (
         <ModalForm
             title="Create event"
@@ -48,11 +49,11 @@ export default function AddEventModal({ subOrganizations }: AddSponsorModalProps
             onFinish={async (values: CreateEventFormState) => {
                 await waitTime(2000)
                 console.log(values)
-                await createEvent(values)
+                await sponsorbook().createEvent(values)
                 message.success('Event created!')
             }}
         >
-             <ProFormGroup>
+            <ProFormGroup>
                 <ProFormText
                     width="md"
                     name="name"
@@ -65,7 +66,7 @@ export default function AddEventModal({ subOrganizations }: AddSponsorModalProps
                         },
                     ]}
                 />
-        
+
                 <ProFormSelect
                     width="md"
                     name="subOrganizations"
@@ -86,12 +87,12 @@ export default function AddEventModal({ subOrganizations }: AddSponsorModalProps
                         },
                     ]}
                 />
-                </ProFormGroup>
-          
-                <ProFormGroup>
+            </ProFormGroup>
+
+            <ProFormGroup>
                 <ProFormTextArea
                     width="md"
-                    name='description'
+                    name="description"
                     label="Event description"
                     placeholder="Describe the event"
                 />

@@ -1,18 +1,22 @@
-import { getEvents, getSubOrgs } from 'sponsorbook/clients/sponsorbook'
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
 import {
     Eventer,
     SubOrganization,
 } from 'sponsorbook/clients/sponsorbook/models'
 import EventsPageComponent from './components/eventsPageComponent'
+import useSessionCookie from 'sponsorbook/utils/useSessionCookie'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AllEventsPage() {
-    const eventData = await getEvents()
-    const subOrganizationData = await getSubOrgs()
-    const events = (await eventData.json()) as Eventer[]
+    const sb = sponsorbook(useSessionCookie())
+    const [eventResponse, subOrganizationResponse] = await Promise.all([
+        sb.getEvents(),
+        sb.getSubOrgs(),
+    ])
+    const events = (await eventResponse.json()) as Eventer[]
     const subOrganizations =
-        (await subOrganizationData.json()) as SubOrganization[]
+        (await subOrganizationResponse.json()) as SubOrganization[]
 
     return (
         <EventsPageComponent

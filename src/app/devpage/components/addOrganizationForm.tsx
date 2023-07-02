@@ -1,12 +1,12 @@
 'use client'
 
 import { Button, Form, Input } from 'antd'
-import { createOrganization } from 'sponsorbook/clients/sponsorbook'
 import { CreateOrganizationRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
 
 export default function AddOrganizationForm() {
     const onFinish = async (values: CreateOrganizationRequest) => {
-        await createOrganization(values)
+        await sponsorbook().createOrganization(values)
     }
 
     const onFinishFailed = (errorInfo: any) => {
