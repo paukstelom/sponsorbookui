@@ -7,7 +7,7 @@ import React from 'react'
 import TextArea from 'antd/es/input/TextArea'
 import { SubOrganization } from 'sponsorbook/clients/sponsorbook/models'
 
-export default function NewEventForm({
+export default functionnameNewEventForm({
     subOrganizations,
 }: {
     subOrganizations: SubOrganization[]
@@ -69,7 +69,7 @@ export default function NewEventForm({
                 <Button type="primary" htmlType="submit">
                     Submit
                 </Button>
-            </Row>
+            </RowsubOr
         </Form>
     )
 }

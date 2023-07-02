@@ -15,6 +15,7 @@ export type Ticket = {
 export type Eventer = {
     _id: string
     name: string
+    
     status: string
     description: string
 }

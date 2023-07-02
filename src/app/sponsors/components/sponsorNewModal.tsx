@@ -31,7 +31,7 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
     return (
         <ModalForm
             title="Add sponsor"
-            trigger={<Button type="primary">Add sponsor</Button>}
+            trigger={<Button>Add sponsor</Button>}
             submitter={{
                 searchConfig: {
                     submitText: 'Add',
