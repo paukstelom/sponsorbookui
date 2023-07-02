@@ -1,23 +1,13 @@
-import {
-    getOneEvent,
-    getOneSponsor,
-    getTicketsForEvent,
-} from 'sponsorbook/clients/sponsorbook'
-import { Ticket } from 'sponsorbook/clients/sponsorbook/models'
-
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
 
 export default async function SingleSponsorPage({
     params,
 }: {
     params: { sponsorId: string }
 }) {
-    const sponsorData = await getOneSponsor(params.sponsorId)
-
+    const sponsorData = await sponsorbook().getOneSponsor(params.sponsorId)
 
     const sponsor = await sponsorData.json()
 
-
-    return (
-        <h1>Sponsor infor here</h1>
-    )
+    return <h1>Sponsor infor here</h1>
 }
