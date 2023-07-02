@@ -11,10 +11,7 @@ export default function SponsorPageComponent({
 }: SponsorPageComponentProps) {
     return (
         <>
-            <div className="site-layout-content">
-                <AddSponsorModal categories={categories} />
-                <SponsorsTable/>
-            </div>
+            <SponsorsTable categories={categories}/>
         </>
     )
 }

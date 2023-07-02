@@ -29,7 +29,6 @@ export default function AddSubOrganizationFrom() {
                 >
                     <Input />
                 </Form.Item>
-
                 <Button type="primary" htmlType="submit">
                     Add
                 </Button>
