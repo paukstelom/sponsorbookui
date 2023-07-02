@@ -2,8 +2,8 @@
 import { ProDescriptions } from '@ant-design/pro-components'
 import { Button } from 'antd'
 import { useRouter } from 'next/navigation'
-import { closeOneEvent, deleteOneEvent } from 'sponsorbook/clients/sponsorbook'
 import { Eventer, Ticket } from 'sponsorbook/clients/sponsorbook/models'
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
 
 export type EventPageProps = {
     event: Eventer
@@ -12,13 +12,13 @@ export type EventPageProps = {
 
 export default function EventPageComponent({ event, tickets }: EventPageProps) {
     const onClickCloseEvent = async () => {
-        await closeOneEvent(event._id)
+        await sponsorbook().closeOneEvent(event._id)
     }
 
     const router = useRouter()
 
     const onClickDeleteEvent = async () => {
-        await deleteOneEvent(event._id)
+        await sponsorbook().deleteOneEvent(event._id)
         router.push('/events')
     }
 
