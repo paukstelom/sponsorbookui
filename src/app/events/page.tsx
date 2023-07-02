@@ -4,12 +4,12 @@ import {
     SubOrganization,
 } from 'sponsorbook/clients/sponsorbook/models'
 import EventsPageComponent from './components/eventsPageComponent'
-import getCookie from 'sponsorbook/utils/getCookie'
+import useSessionCookie from 'sponsorbook/utils/useSessionCookie'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AllEventsPage() {
-    const sb = sponsorbook(getCookie())
+    const sb = sponsorbook(useSessionCookie())
     const [eventResponse, subOrganizationResponse] = await Promise.all([
         sb.getEvents(),
         sb.getSubOrgs(),

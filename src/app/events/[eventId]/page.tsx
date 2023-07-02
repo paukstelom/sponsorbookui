@@ -1,14 +1,14 @@
 import sponsorbook from 'sponsorbook/clients/sponsorbook'
 import { Ticket } from 'sponsorbook/clients/sponsorbook/models'
 import EventPageComponent from '../components/eventPageComponent'
-import getCookie from 'sponsorbook/utils/getCookie'
+import useSessionCookie from 'sponsorbook/utils/useSessionCookie'
 
 export default async function SingleEventPage({
     params,
 }: {
     params: { eventId: string }
 }) {
-    const sb = sponsorbook(getCookie())
+    const sb = sponsorbook(useSessionCookie())
 
     const eventData = await sb.getOneEvent(params.eventId)
     const ticketData = await sb.getTicketsForEvent(params.eventId)

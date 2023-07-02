@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-export default function getCookie() {
+export default function useSessionCookie() {
     const cookie = cookies().get('session')
 
     if (!cookie) {
