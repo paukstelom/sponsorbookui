@@ -1,17 +1,10 @@
-import { Category, Sponsor } from 'sponsorbook/clients/sponsorbook/models'
-import AddSponsorModal from './sponsorNewModal'
+import { Category } from 'sponsorbook/clients/sponsorbook/models'
 import SponsorsTable from './sponsorsTable'
 
-export type SponsorPageComponentProps = {
-    categories: Category[]
-}
-
-export default function SponsorPageComponent({
-    categories,
-}: SponsorPageComponentProps) {
+export default function SponsorPageComponent() {
     return (
         <>
-            <SponsorsTable categories={categories}/>
+            <SponsorsTable/>
         </>
     )
 }

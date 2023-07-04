@@ -3,7 +3,7 @@ import { Button, message } from 'antd'
 import React from 'react'
 import { CreateSponsorRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
 import sponsorbook from 'sponsorbook/clients/sponsorbook'
-import { Category } from 'sponsorbook/clients/sponsorbook/models'
+import { Category, Contact, Sponsor } from 'sponsorbook/clients/sponsorbook/models'
 import {
     ModalForm,
     ProForm,
@@ -14,38 +14,36 @@ import {
     ProFormTextArea,
 } from '@ant-design/pro-components'
 
-export type AddSponsorModalProps = {
-    categories: Category[]
+
+
+const requestCategories = async () => {
+    const response = await sponsorbook().getCategories()
+    const categories = await response.json()
+    const formattedCategories = categories.map((category: Category) => ({
+        label: category.name,
+        value: category._id,
+    }))
+    return formattedCategories
 }
 
-const waitTime = (time: number = 100) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(true)
-        }, time)
-    })
-}
 
-export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
+export default function AddSponsorModal() {
     return (
         <ModalForm
             title="Add sponsor"
             trigger={<Button>Add sponsor</Button>}
             submitter={{
                 searchConfig: {
-                    submitText: 'Add',
-                    resetText: 'Reset',
+                    submitText: 'Add contact',
                 },
-                submitButtonProps: {
+                
+                resetButtonProps: {
                     style: {
-                        display: 'solid',
-                    },
-                },
-            }}
+                        display: 'none',
+                }
+            }}}
             onFinish={async (values: CreateSponsorRequest) => {
-                console.log(values)
                 await sponsorbook().createSponsor(values)
-                await waitTime(2000)
                 message.success('Sponsor added!')
             }}
         >
@@ -91,10 +89,8 @@ export default function AddSponsorModal({ categories }: AddSponsorModalProps) {
                     width="md"
                     name="categories"
                     label="Select categories"
-                    options={categories.map((category) => ({
-                        value: category._id,
-                        label: category.name,
-                    }))}
+                    dataFormat='array'
+                    request={requestCategories}                                 
                     fieldProps={{
                         mode: 'multiple',
                     }}

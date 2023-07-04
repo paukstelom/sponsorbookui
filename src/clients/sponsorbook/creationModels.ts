@@ -9,6 +9,16 @@ export type CreateSponsorRequest = {
     category: string
     description: string
 }
+
+export type CreateContactRequest = {
+    sponsor_id: string
+    name: string
+    email: string
+    phone: string
+    details: string
+}
+
+
 export type CreateOrganizationRequest = {
     name: string
     user_email: string

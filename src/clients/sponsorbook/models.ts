@@ -26,7 +26,6 @@ export type Sponsor = {
     website: string
     companyNumber: string
     status: string
-    contacts: Contact[]
     description: string
     rating: Rating
     categories: string[]
@@ -38,10 +37,12 @@ export type Rating = {
 }
 
 export type Contact = {
+    _id: string
+    sponsorId: string
     name: string
     phone: string
     email: string
-    info: string
+    details: string
 }
 
 export type Category = {

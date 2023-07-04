@@ -5,8 +5,9 @@ import {
     CreateSponsorRequest,
     LoginRequest,
     CreateSubOrganizationRequest,
+    CreateContactRequest,
 } from 'sponsorbook/clients/sponsorbook/creationModels'
-import { Sponsor } from './sponsorbook/models'
+import { Contact, Sponsor } from './sponsorbook/models'
 
 const sponsorbookUrl = (path: string) => `http://localhost:3000/api${path}`
 
@@ -23,7 +24,7 @@ export type CustomConfig = {
 
 const sponsorbook = (config: CustomConfig = {}) => ({
     login: async (data: LoginRequest) =>
-        fetch(sponsorbookUrl('/login'), {
+        fetch(sponsorbookUrl('/auth/login'), {
             method: 'POST',
             body: JSON.stringify(data),
             ...defaultConfig(config),
@@ -40,12 +41,29 @@ const sponsorbook = (config: CustomConfig = {}) => ({
             body: JSON.stringify(data),
             ...defaultConfig(config),
         }),
+    updateContact: async (data: Contact) =>
+        fetch(sponsorbookUrl(`/contacts/${data._id}`), {
+            method: 'PATCH',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
+    addContact: async (data: CreateContactRequest, sponsorId: string) =>
+        fetch(sponsorbookUrl(`/sponsors/${sponsorId}/contacts`), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
 
     getSubOrgs: async () =>
         fetch(sponsorbookUrl('/sub_organizations'), defaultConfig(config)),
 
     getSponsors: async () =>
         fetch(sponsorbookUrl('/sponsors'), defaultConfig(config)),
+
+
+    getContacts: async (sponsorId: string) =>
+        fetch(sponsorbookUrl(`/sponsors/${sponsorId}/contacts`), defaultConfig(config)),
+
     getEvents: async () =>
         fetch(sponsorbookUrl('/events'), defaultConfig(config)),
     getTickets: async () =>
@@ -62,6 +80,10 @@ const sponsorbook = (config: CustomConfig = {}) => ({
 
     getOneEvent: async (eventId: string) =>
         fetch(sponsorbookUrl(`/events/${eventId}`), defaultConfig(config)),
+
+    getOneContact: async (contactId: string) =>
+        fetch(sponsorbookUrl(`/contacts/${contactId}`), defaultConfig(config)),
+
     deleteOneEvent: async (eventId: string) =>
         fetch(sponsorbookUrl(`/events/${eventId}`), {
             method: 'DELETE',
@@ -95,6 +117,12 @@ const sponsorbook = (config: CustomConfig = {}) => ({
             method: 'DELETE',
             ...defaultConfig(config),
         }),
+    deleteOneContact: async (contactId: string) =>
+        fetch(sponsorbookUrl(`/contacts/${contactId}`), {
+            method: 'DELETE',
+            ...defaultConfig(config),
+        }),
+
     createEvent: async (data: CreateEventFormState) =>
         fetch(sponsorbookUrl('/events'), {
             method: 'POST',

@@ -11,8 +11,5 @@ export const dynamic = 'force-dynamic'
 export default async function AllSponsorsPage() {
     const sb = sponsorbook(useSessionCookie())
 
-    const categoryData = await sb.getCategories()
-    const categories = (await categoryData.json()) as Category[]
-
-    return <SponsorPageComponent categories={categories} />
+    return <SponsorPageComponent/>
 }

@@ -30,7 +30,7 @@ export default function AddEventModal({
     return (
         <ModalForm
             title="Create event"
-            trigger={<Button type="primary">Create new event</Button>}
+            trigger={<Button>Create new event</Button>}
             submitter={{
                 searchConfig: {
                     submitText: 'Add',

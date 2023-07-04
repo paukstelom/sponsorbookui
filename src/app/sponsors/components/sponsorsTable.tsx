@@ -1,65 +1,82 @@
 'use client'
-import React from 'react'
-import { Sponsor, Category } from 'sponsorbook/clients/sponsorbook/models'
-import { ProColumns, ProTable } from '@ant-design/pro-components'
-import AddSponsorModal from './sponsorNewModal'
-import { Button, Space, Tag } from 'antd'
-import { useRouter } from 'next/navigation'
-import sponsorbook from 'sponsorbook/clients/sponsorbook'
 
-export type SponsorTableProps = {
-    categories: Category[]
+import { ProColumns, ProTable } from '@ant-design/pro-components'
+import { Button, Popover, Rate, Space, Tag } from 'antd'
+import { Category, Sponsor } from 'sponsorbook/clients/sponsorbook/models'
+import AddSponsorModal from './sponsorAddModal'
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
+import ContactTable from './contactTable'
+import { useRouter } from 'next/navigation'
+
+const executeRequest = async ({}) => {
+    const result = await sponsorbook().getSponsors()
+    const data = await result.json()
+    return Promise.resolve({ data, success: true })
 }
 
-export default function SponsorsTable({ categories }: SponsorTableProps) {
+
+
+export default function SponsorsTable() {
+    
+
+
+    // const requestCategories = async () => {
+    //     const response = await sponsorbook().getCategories()
+    //     const categories = await response.json()
+    //     const formattedCategories = categories.map((category: Category) => ({
+    //         label: category.name,
+    //         value: category._id,
+    //     }))
+
+    //     return formattedCategories
+    // }
+
     const router = useRouter()
-
-    const executeRequest = async ({}) => {
-        const result = await sponsorbook().getSponsors()
-        const data = await result.json()
-        return Promise.resolve({ data, success: true })
-    }
-
-    type TableListSponsor = {
-        sponsor: Sponsor
-        id: string
-        companyName: string
-        website: string
-        status: string
-        categories: string[]
-        email: string
-        number: string
-        rating: number
-    }
-
-    const columns: ProColumns<TableListSponsor>[] = [
+    
+    const columns: ProColumns<Sponsor>[] = [
         {
             title: 'Name',
             width: '15%',
             align: 'center',
-            dataIndex: 'companyName',
+            dataIndex: 'name',
 
-            render: (_) => <a>{_}</a>,
+            render: (_, sponsor) => (
+                <Popover trigger={'hover'} content={sponsor.description}>
+                    {_}
+                </Popover>
+            ),
         },
         {
             title: 'Website',
             width: '15%',
             align: 'center',
-            dataIndex: 'companyName',
-            render: (_) => <a>{_}</a>,
+            dataIndex: 'website',
+            render: (_, spons) => <a href={spons.website}>{spons.website}</a>,
         },
         {
             title: 'Category',
-            width: '20%',
+            width: '15%',
             align: 'center',
+            filters: true,
+            onFilter: true,
+            valueType: 'select',
             dataIndex: 'categories',
-            render: (_) => <a>{_}</a>,
+            render: (_, sponsor) => (
+                <Space>
+                    {sponsor.categories.map((category) => (
+                        <Tag color="blue" key={category}>
+                            {/* {_.find((c) => c._id === category)?.name} */}
+                        </Tag>
+                    ))}
+                </Space>
+            ),
         },
         {
             title: 'Status',
             width: '10%',
             align: 'center',
             dataIndex: 'status',
+            sorter: (a, b) => a.status.length - b.status.length,
             render: (status) => {
                 let color: string = ''
                 if (status === 'Available') {
@@ -74,11 +91,15 @@ export default function SponsorsTable({ categories }: SponsorTableProps) {
         },
         {
             title: 'Rating',
-            width: '10%',
+            width: '15%',
             align: 'center',
-            valueType: 'rate',
-            dataIndex: 'rating',
-            sorter: (a, b) => a.rating - b.rating,
+            dataIndex: ['rating', 'score'],
+            sorter: (a, b) => a.rating.score - b.rating.score,
+            render: (_, sponsor) => (
+                <Popover trigger={'hover'} content={sponsor.rating.info}>
+                    <Rate disabled defaultValue={sponsor.rating.score} />
+                </Popover>
+            ),
         },
 
         {
@@ -86,88 +107,41 @@ export default function SponsorsTable({ categories }: SponsorTableProps) {
             width: '15%',
             align: 'center',
             valueType: 'rate',
-            render: () => [
-                <Button key="" onClick={(event) => router.push(`/sponsors/ha`)}>
-                    Open
-                </Button>,
-                <Button key=" ">Expand</Button>,
-            ],
+            render: (_, sponsor) => [<Button key="1" onClick={() =>
+                router.push(`/sponsors/${sponsor._id}`)
+            }>View details</Button>],
         },
     ]
 
-    const expandedRowRender = () => {
-        return (
-            <div>
-                <center>
-                    <h3>Contact info here</h3>
-                </center>
-                <center>
-                    <h3>Contact info here</h3>
-                </center>
-                <center>
-                    <h3>Contact info here</h3>
-                </center>
-            </div>
-        )
-    }
-
     return (
         <>
-            <div
-                style={{
-                    backgroundColor: '#eee',
-                    margin: -24,
-                    padding: 24,
+            <ProTable
+                search={false}
+                columns={columns}
+                request={executeRequest}
+                pagination={{
+                    defaultPageSize: 7,
+                    showSizeChanger: false,
                 }}
-            >
-                <ProTable
-                    search={false}
-                    columns={columns}
-                    request={executeRequest}
-                    pagination={{
-                        defaultPageSize: 7,
-                        showSizeChanger: false,
-                    }}
-                    // Research how to implement table integrated search
-                    options={{
-                        search: true,
-                    }}
-                    // Fix expandable rows https://ant.design/components/table#expandable
-                    // expandable={{ expandedRowRender,
-                    //   columnWidth: "1%",
-                    //   expandRowByClick: true,}}
-
-                    // Add copyable: true, for easier copying of
-
-                    toolBarRender={() => [
-                        <AddSponsorModal
-                            key=""
-                            categories={categories}
-                        ></AddSponsorModal>,
-                    ]}
-                    rowKey={(x) => x.id}
-                    onRow={(record, rowIndex) => {
-                        return {
-                            onClick: (event) => {},
-                            onDoubleClick: (event) => {}, // double click row
-                            onContextMenu: (event) => {}, // right button click row
-                            onMouseEnter: (event) => {}, // mouse enter row
-                            onMouseLeave: (event) => {}, // mouse leave row
-                        }
-                    }}
-                    postData={(data: Sponsor[]) => {
-                        return data.map((sponsor) => ({
-                            id: sponsor._id,
-                            sponsor: sponsor,
-                            companyName: sponsor.name,
-                            website: sponsor.website,
-                            categories: sponsor.categories,
-                            status: sponsor.status,
-                            rating: sponsor.rating.score,
-                        })) as TableListSponsor[]
-                    }}
-                ></ProTable>
-            </div>
+                options={{
+                    search: true,
+                    setting: false,
+                }}
+                expandable={{
+                    expandedRowRender: (sponsor) => (
+                        <ContactTable sponsorId={sponsor._id}></ContactTable>
+                    ),
+                    showExpandColumn: true,
+                    columnWidth: '1%',
+                    fixed: true,
+                }}
+                toolBarRender={() => [
+                    <AddSponsorModal
+                        key=""
+                    ></AddSponsorModal>,
+                ]}
+                rowKey={(sponsor) => sponsor._id}
+            />
         </>
     )
 }
