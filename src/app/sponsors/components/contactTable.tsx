@@ -15,8 +15,8 @@ import ContactViewButton from './contactViewButton'
 
 const executeRequest = async (sponsorId: string) => {
     const result = await sponsorbook().getContacts(sponsorId)
-    const data = await result.json()
-    return Promise.resolve({ data, success: true })
+    const data = await result.json() as Contact[]
+    return { data , success: true }
 }
 
 export default function ContactTable({ sponsorId }: { sponsorId: string }) {
@@ -37,6 +37,7 @@ export default function ContactTable({ sponsorId }: { sponsorId: string }) {
         {
             width: '15%',
             align: 'center',
+            dataIndex: 'phone',
             copyable: true,
             render: (_) => <>{_}</>,
         },
@@ -50,7 +51,7 @@ export default function ContactTable({ sponsorId }: { sponsorId: string }) {
         {
             width: '15%',
             align: 'center',
-            dataIndex: 'details',
+            
 
             copyable: true,
             render: (_, contact) => {

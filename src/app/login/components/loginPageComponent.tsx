@@ -37,46 +37,27 @@ export default function LoginPageComponent() {
         router.push('/')
     }
 
-    const [loginType, setLoginType] = useState<LoginType>('phone');
+    const [loginType, setLoginType] = useState<LoginType>('account');
 
     
     return (
       <div
         style={{
           backgroundColor: 'white',
-          height: 'calc(100vh - 48px)',
+          height: '85vh',
           margin: -24,
+          boxShadow: '-20px -20px -20px rgba(0, 0, 0, 0.5)',
         }}
       >
         <LoginFormPage
-          backgroundImageUrl="https://gw.alipayobjects.com/zos/rmsportal/FfdJeJRQWjEeGTpqgBKj.png"
+        // backgroundImageUrl="https://gw.alipayobjects.com/zos/rmsportal/FfdJeJRQWjEeGTpqgBKj.png"
+          backgroundImageUrl="vgtuuniversity.jpg"
           logo="https://github.githubassets.com/images/modules/logos_page/Octocat.png"
           title="SponsorBook"
           subTitle="Make your sponsorship easy"
           onFinish={onFinish}
-          activityConfig={{
-            style: {
-              boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.2)',
-              color: '#fff',
-              borderRadius: 8,
-              backgroundColor: '#1677FF',
-            },
-            title: 'Some text here',
-            subTitle: 'More text here',
-            action: (
-              <Button
-                size="large"
-                style={{
-                  borderRadius: 20,
-                  background: '#fff',
-                  color: '#1677FF',
-                  width: 120,
-                }}
-              >
-                Button
-              </Button>
-            ),
-          }}
+      
+    
           actions={
             <div
               style={{

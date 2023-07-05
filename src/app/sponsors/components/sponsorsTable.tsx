@@ -14,22 +14,22 @@ const executeRequest = async ({}) => {
     return Promise.resolve({ data, success: true })
 }
 
+const requestCategories = async () => {
+    const response = await sponsorbook().getCategories()
+    const categories = await response.json()
+    const formattedCategories = categories.map((category: Category) => ({
+        label: category.name,
+        value: category._id,
+    }))
+
+    return formattedCategories
+}
 
 
 export default function SponsorsTable() {
     
 
-
-    // const requestCategories = async () => {
-    //     const response = await sponsorbook().getCategories()
-    //     const categories = await response.json()
-    //     const formattedCategories = categories.map((category: Category) => ({
-    //         label: category.name,
-    //         value: category._id,
-    //     }))
-
-    //     return formattedCategories
-    // }
+    const categories = requestCategories()
 
     const router = useRouter()
     
@@ -65,7 +65,7 @@ export default function SponsorsTable() {
                 <Space>
                     {sponsor.categories.map((category) => (
                         <Tag color="blue" key={category}>
-                            {/* {_.find((c) => c._id === category)?.name} */}
+                           {_} {/* {_.find((c) => c._id === category)?.name} */}
                         </Tag>
                     ))}
                 </Space>
