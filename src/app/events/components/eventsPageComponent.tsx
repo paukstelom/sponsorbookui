@@ -43,13 +43,7 @@ export default function EventsPageComponent({
   
     return (
         <>
-           <div
-      style={{
-        backgroundColor: '#eee',
-        margin: -24,
-        padding: 24,
-      }}
-    >
+         
       <ProList<any>
         toolBarRender={() => {
             return [<AddEventModal key='' subOrganizations={subOrganizations}></AddEventModal>
@@ -111,7 +105,7 @@ export default function EventsPageComponent({
         headerTitle="Events"
         dataSource={listData}
       />
-    </div>
+    
         </>
     )
 }

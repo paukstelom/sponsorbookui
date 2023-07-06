@@ -116,6 +116,7 @@ export default function SponsorsTable() {
     return (
         <>
             <ProTable
+            
                 search={false}
                 columns={columns}
                 request={executeRequest}
@@ -123,6 +124,8 @@ export default function SponsorsTable() {
                     defaultPageSize: 7,
                     showSizeChanger: false,
                 }}
+                
+                scroll={{ y: '55vh' }}
                 options={{
                     search: true,
                     setting: false,

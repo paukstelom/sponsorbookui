@@ -81,7 +81,7 @@ export const SponsorBookLayout = ({
             <Breadcrumb.Item>login</Breadcrumb.Item>
           </Breadcrumb>
       
-          <div style={{margin:'3vh 4vh 3vh 4vh', padding: 24, minHeight: 360, background: colorBgContainer, boxShadow: '0px 0px 20px 5px rgba(0, 0, 0, 0.5)' }}>
+          <div style={{margin:'3vh 4vh 3vh 4vh', padding: 24, maxHeight:'', minHeight: 360, background: colorBgContainer, boxShadow: '0px 0px 20px 5px rgba(0, 0, 0, 0.5)' }}>
             {children}{contextHolder}
           </div>
                </Content>
