@@ -5,7 +5,7 @@ import { CreateCategoryRequest } from 'sponsorbook/clients/sponsorbook/creationM
 
 export default function AddSponsorCategoryForm() {
     const onFinish = async (values: CreateCategoryRequest) => {
-        await sponsorbook().createCategory(values)
+        await sponsorbook().addCategory(values)
     }
 
     return (

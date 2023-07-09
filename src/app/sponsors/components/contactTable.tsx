@@ -3,20 +3,17 @@ import { Button, Modal, Popover, Progress, Space, Tag, message } from 'antd'
 import React, { Key, useRef, useState } from 'react'
 import sponsorbook from 'sponsorbook/clients/sponsorbook'
 
-import {
-    ActionType,
-    ProColumns,
-    ProTable,
-} from '@ant-design/pro-components'
-import AddContactModal from './addContactModal'
+import { PhoneOutlined } from '@ant-design/icons'
+import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components'
 import { Contact } from 'sponsorbook/clients/sponsorbook/models'
+import AddContactModal from './addContactModal'
 import ContactDeleteButton from './contactDeleteButton'
 import ContactViewButton from './contactViewButton'
 
 const executeRequest = async (sponsorId: string) => {
-    const result = await sponsorbook().getContacts(sponsorId)
-    const data = await result.json() as Contact[]
-    return { data , success: true }
+    const result = await sponsorbook().getContactsForSponsor(sponsorId)
+    const data = (await result.json()) as Contact[]
+    return { data, success: true }
 }
 
 export default function ContactTable({ sponsorId }: { sponsorId: string }) {
@@ -51,13 +48,14 @@ export default function ContactTable({ sponsorId }: { sponsorId: string }) {
         {
             width: '15%',
             align: 'center',
-            
 
             copyable: true,
             render: (_, contact) => {
                 return (
                     <Space size={1}>
-                        <Button type="ghost">Connect</Button>
+                        <Button type="ghost">
+                            <PhoneOutlined />
+                        </Button>
                         <ContactViewButton
                             contact={contact}
                             contactTableRef={contactTableRef}

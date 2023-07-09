@@ -6,7 +6,7 @@ import sponsorbook from 'sponsorbook/clients/sponsorbook'
 
 export default function AddOrganizationForm() {
     const onFinish = async (values: CreateOrganizationRequest) => {
-        await sponsorbook().createOrganization(values)
+        await sponsorbook().addOrganization(values)
     }
 
     const onFinishFailed = (errorInfo: any) => {

@@ -3,38 +3,20 @@ import { Button, Modal, message } from 'antd'
 import React, { useContext } from 'react'
 import sponsorbook from 'sponsorbook/clients/sponsorbook'
 
-import { Contact } from 'sponsorbook/clients/sponsorbook/models'
-import { ExclamationCircleFilled } from '@ant-design/icons'
+import { DeleteOutlined, ExclamationCircleFilled } from '@ant-design/icons'
 import { SelectKeyProvide } from '@ant-design/pro-components'
-import MessageContext from 'sponsorbook/components/messageContext'
-
-
+import { Contact } from 'sponsorbook/clients/sponsorbook/models'
 
 type Props = {
     contact: Contact
     contactTableRef: React.MutableRefObject<any>
 }
 
-
-export default function ContactDeleteButton({ contact, contactTableRef }: Props) {
-    
+export default function ContactDeleteButton({
+    contact,
+    contactTableRef,
+}: Props) {
     const { confirm } = Modal
-    
-    const messageApi = useContext(MessageContext) 
-
-    const success = () => {
-        messageApi.open({
-            type: 'success',
-            content: 'Sponsor deleted succesfully',
-        })
-    }
-
-    const error = (message: string) => {
-        messageApi.open({
-            type: 'error',
-            content: message,
-        })
-    }
 
     const showDeleteConfirm = async (contact: Contact) => {
         confirm({
@@ -48,13 +30,11 @@ export default function ContactDeleteButton({ contact, contactTableRef }: Props)
             onOk: async () => {
                 const res = await sponsorbook().deleteOneContact(contact._id)
                 if (res.ok) {
-                    
-                    success()
+                    message.success('Contact deleted succesfully')
                     contactTableRef.current?.reload()
-                    
                 } else {
                     const response = await res.json()
-                    error(response.detail)
+                    message.error(response.detail)
                 }
             },
         })
@@ -62,16 +42,14 @@ export default function ContactDeleteButton({ contact, contactTableRef }: Props)
 
     return (
         <>
-            
             <Button
                 type="ghost"
-                onClick={async () => {await
-                        showDeleteConfirm(contact)
+                onClick={async () => {
+                    await showDeleteConfirm(contact)
                 }}
             >
-                Delete
+                <DeleteOutlined />
             </Button>
-     
         </>
     )
 }

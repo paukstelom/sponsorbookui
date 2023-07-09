@@ -1,13 +1,14 @@
 import {
     CreateCategoryRequest,
-    CreateEventFormState,
+    CreateContactRequest,
+    CreateEventRequest,
     CreateOrganizationRequest,
     CreateSponsorRequest,
-    LoginRequest,
     CreateSubOrganizationRequest,
-    CreateContactRequest,
+    
 } from 'sponsorbook/clients/sponsorbook/creationModels'
 import { Contact, Sponsor } from './sponsorbook/models'
+import { LoginRequest } from 'sponsorbook/utils/authentication'
 
 const sponsorbookUrl = (path: string) => `http://localhost:3000/api${path}`
 
@@ -29,12 +30,52 @@ const sponsorbook = (config: CustomConfig = {}) => ({
             body: JSON.stringify(data),
             ...defaultConfig(config),
         }),
-    createSponsor: async (data: CreateSponsorRequest) =>
+
+    // ADD REQUESTS
+
+    addSponsor: async (data: CreateSponsorRequest) =>
         fetch(sponsorbookUrl('/sponsors'), {
             method: 'POST',
             body: JSON.stringify(data),
             ...defaultConfig(config),
         }),
+
+    addContact: async (data: CreateContactRequest, sponsorId: string) =>
+        fetch(sponsorbookUrl(`/sponsors/${sponsorId}/contacts`), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
+
+    addEvent: async (data: CreateEventRequest) =>
+        fetch(sponsorbookUrl('/events'), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
+
+    addOrganization: async (data: CreateOrganizationRequest) =>
+        fetch(sponsorbookUrl('/organizations'), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
+
+    addCategory: async (data: CreateCategoryRequest) =>
+        fetch(sponsorbookUrl('/categories'), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
+    addSubOrg: async (data: CreateSubOrganizationRequest) =>
+        fetch(sponsorbookUrl('/sub_organizations'), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            ...defaultConfig(config),
+        }),
+
+    // UPDATE REQUESTS
+
     updateSponsor: async (data: Sponsor) =>
         fetch(sponsorbookUrl(`/sponsors/${data._id}`), {
             method: 'PUT',
@@ -47,12 +88,8 @@ const sponsorbook = (config: CustomConfig = {}) => ({
             body: JSON.stringify(data),
             ...defaultConfig(config),
         }),
-    addContact: async (data: CreateContactRequest, sponsorId: string) =>
-        fetch(sponsorbookUrl(`/sponsors/${sponsorId}/contacts`), {
-            method: 'POST',
-            body: JSON.stringify(data),
-            ...defaultConfig(config),
-        }),
+
+    // GET ALL REQUESTS
 
     getSubOrgs: async () =>
         fetch(sponsorbookUrl('/sub_organizations'), defaultConfig(config)),
@@ -60,21 +97,31 @@ const sponsorbook = (config: CustomConfig = {}) => ({
     getSponsors: async () =>
         fetch(sponsorbookUrl('/sponsors'), defaultConfig(config)),
 
-
-    getContacts: async (sponsorId: string) =>
-        fetch(sponsorbookUrl(`/sponsors/${sponsorId}/contacts`), defaultConfig(config)),
-
     getEvents: async () =>
         fetch(sponsorbookUrl('/events'), defaultConfig(config)),
+
     getTickets: async () =>
         fetch(sponsorbookUrl('/tickets'), defaultConfig(config)),
+
+    getCategories: async () =>
+        fetch(sponsorbookUrl('/categories'), defaultConfig(config)),
+
+    // GET SPECIFIC REQUESTS
+
+    getContactsForSponsor: async (sponsorId: string) =>
+        fetch(
+            sponsorbookUrl(`/sponsors/${sponsorId}/contacts`),
+            defaultConfig(config)
+        ),
+
     getTicketsForEvent: async (eventId: string) =>
         fetch(
             sponsorbookUrl(`/events/${eventId}/tickets`),
             defaultConfig(config)
         ),
-    getCategories: async () =>
-        fetch(sponsorbookUrl('/categories'), defaultConfig(config)),
+
+    // GET SINGLE REQUESTS
+
     getOneSponsor: async (sponsorId: string) =>
         fetch(sponsorbookUrl(`/sponsors/${sponsorId}`), defaultConfig(config)),
 
@@ -84,34 +131,14 @@ const sponsorbook = (config: CustomConfig = {}) => ({
     getOneContact: async (contactId: string) =>
         fetch(sponsorbookUrl(`/contacts/${contactId}`), defaultConfig(config)),
 
+    // DELETE REQUESTS
+
     deleteOneEvent: async (eventId: string) =>
         fetch(sponsorbookUrl(`/events/${eventId}`), {
             method: 'DELETE',
             ...defaultConfig(config),
         }),
-    createOrganization: async (data: CreateOrganizationRequest) =>
-        fetch(sponsorbookUrl('/organizations'), {
-            method: 'POST',
-            body: JSON.stringify(data),
-            ...defaultConfig(config),
-        }),
-    createCategory: async (data: CreateCategoryRequest) =>
-        fetch(sponsorbookUrl('/categories'), {
-            method: 'POST',
-            body: JSON.stringify(data),
-            ...defaultConfig(config),
-        }),
-    createSubOrganization: async (data: CreateSubOrganizationRequest) =>
-        fetch(sponsorbookUrl('/sub_organizations'), {
-            method: 'POST',
-            body: JSON.stringify(data),
-            ...defaultConfig(config),
-        }),
-    closeOneEvent: async (eventId: string) =>
-        fetch(sponsorbookUrl(`/events/${eventId}/close`), {
-            method: 'POST',
-            ...defaultConfig(config),
-        }),
+
     deleteOneSponsor: async (sponsorId: string) =>
         fetch(sponsorbookUrl(`/sponsors/${sponsorId}`), {
             method: 'DELETE',
@@ -123,10 +150,11 @@ const sponsorbook = (config: CustomConfig = {}) => ({
             ...defaultConfig(config),
         }),
 
-    createEvent: async (data: CreateEventFormState) =>
-        fetch(sponsorbookUrl('/events'), {
+    // OTHER REQUESTS
+
+    closeOneEvent: async (eventId: string) =>
+        fetch(sponsorbookUrl(`/events/${eventId}/close`), {
             method: 'POST',
-            body: JSON.stringify(data),
             ...defaultConfig(config),
         }),
 })

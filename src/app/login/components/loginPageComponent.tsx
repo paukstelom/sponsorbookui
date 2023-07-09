@@ -41,14 +41,7 @@ export default function LoginPageComponent() {
 
     
     return (
-      <div
-        style={{
-          backgroundColor: 'white',
-          height: '85vh',
-          margin: -24,
-          boxShadow: '-20px -20px -20px rgba(0, 0, 0, 0.5)',
-        }}
-      >
+     
         <LoginFormPage
         // backgroundImageUrl="https://gw.alipayobjects.com/zos/rmsportal/FfdJeJRQWjEeGTpqgBKj.png"
           backgroundImageUrl="vgtuuniversity.jpg"
@@ -226,6 +219,6 @@ export default function LoginPageComponent() {
             </a>
           </div>
         </LoginFormPage>
-      </div>
+   
     );
   };

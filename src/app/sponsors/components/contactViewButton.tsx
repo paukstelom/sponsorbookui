@@ -5,8 +5,8 @@ import sponsorbook from 'sponsorbook/clients/sponsorbook'
 
 import { Contact } from 'sponsorbook/clients/sponsorbook/models'
 
+import { SolutionOutlined } from '@ant-design/icons'
 import { ActionType, ProDescriptions } from '@ant-design/pro-components'
-import MessageContext from 'sponsorbook/components/messageContext'
 
 type Props = {
     contact: Contact
@@ -19,22 +19,6 @@ export default function ContactViewButton({ contact, contactTableRef }: Props) {
     const [isContactOpen, setIsContactOpen] = useState<Contact | undefined>(
         undefined
     )
-
-    const messageApi = useContext(MessageContext) 
-
-    const success = () => {
-        messageApi.open({
-            type: 'success',
-            content: 'Sponsor edited sucessfully',
-        })
-    }
-
-    const error = (message: string) => {
-        messageApi.open({
-            type: 'error',
-            content: message,
-        })
-    }
 
     const executeRequest = async (contactId: string) => {
         const result = await sponsorbook().getOneContact(contactId)
@@ -74,7 +58,7 @@ export default function ContactViewButton({ contact, contactTableRef }: Props) {
                     setIsContactOpen(contact)
                 }}
             >
-                View
+                <SolutionOutlined />
             </Button>
             <Modal
                 title="Contact details"
@@ -95,13 +79,13 @@ export default function ContactViewButton({ contact, contactTableRef }: Props) {
                                 contact
                             )
                             if (res.ok) {
-                                success()
+                                message.success('Contact edited sucessfully')
                                 contactTableRef.current?.reload()
                             } else {
                                 setIsContactOpen(undefined)
                                 contactRef.current?.reload()
                                 const response = await res.json()
-                                error(response.detail)
+                                message.error(response.message)
                             }
                         },
                         onlyOneLineEditorAlertMessage:
@@ -110,7 +94,6 @@ export default function ContactViewButton({ contact, contactTableRef }: Props) {
                     request={async () => await executeRequest(contact._id)}
                 ></ProDescriptions>
             </Modal>
-         
         </>
     )
 }

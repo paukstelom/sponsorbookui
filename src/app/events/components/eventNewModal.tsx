@@ -1,7 +1,5 @@
 'use client'
-import { Button, message } from 'antd'
-import React from 'react'
-import { SubOrganization } from 'sponsorbook/clients/sponsorbook/models'
+import { PlusOutlined } from '@ant-design/icons'
 import {
     ModalForm,
     ProFormGroup,
@@ -9,28 +7,27 @@ import {
     ProFormText,
     ProFormTextArea,
 } from '@ant-design/pro-components'
-import { CreateEventFormState } from 'sponsorbook/clients/sponsorbook/creationModels'
+import { Button, message } from 'antd'
+import React from 'react'
 import sponsorbook from 'sponsorbook/clients/sponsorbook'
+import { CreateEventRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
+import { SubOrganization } from 'sponsorbook/clients/sponsorbook/models'
 
-export type AddSponsorModalProps = {
+type Props = {
     subOrganizations: SubOrganization[]
+    ref: React.RefObject<any>
 }
 
-const waitTime = (time: number = 100) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(true)
-        }, time)
-    })
-}
-
-export default function AddEventModal({
-    subOrganizations,
-}: AddSponsorModalProps) {
+export default function AddEventModal({ subOrganizations, ref }: Props) {
     return (
         <ModalForm
             title="Create event"
-            trigger={<Button>Create new event</Button>}
+            trigger={
+                <Button>
+                    <PlusOutlined />
+                    Create Event
+                </Button>
+            }
             submitter={{
                 searchConfig: {
                     submitText: 'Add',
@@ -46,11 +43,17 @@ export default function AddEventModal({
                     },
                 },
             }}
-            onFinish={async (values: CreateEventFormState) => {
-                await waitTime(2000)
-                console.log(values)
-                await sponsorbook().createEvent(values)
-                message.success('Event created!')
+            onFinish={async (values: CreateEventRequest) => {
+                const response = await sponsorbook().addEvent(values)
+                if (response.ok) {
+                    ref.current.reload()
+                    message.success('Event created successfully')
+                    return true
+                } else {
+                    const data = await response.json()
+                    message.error(data.detail)
+                    return false
+                }
             }}
         >
             <ProFormGroup>

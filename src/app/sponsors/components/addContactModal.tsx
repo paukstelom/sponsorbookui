@@ -1,11 +1,11 @@
 'use client'
 import { Button, message } from 'antd'
 import React, { useContext, useState } from 'react'
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
 import {
     CreateContactRequest,
     CreateSponsorRequest,
 } from 'sponsorbook/clients/sponsorbook/creationModels'
-import sponsorbook from 'sponsorbook/clients/sponsorbook'
 
 import {
     ModalForm,
@@ -13,7 +13,6 @@ import {
     ProFormText,
     ProFormTextArea,
 } from '@ant-design/pro-components'
-import MessageContext from 'sponsorbook/components/messageContext'
 
 type Props = {
     sponsorId: string
@@ -21,43 +20,22 @@ type Props = {
 }
 
 export default function AddContactModal({ sponsorId, contactTableRef }: Props) {
-
-    const messageApi = useContext(MessageContext) 
-
-    const success = () => {
-        messageApi.open({
-            type: 'success',
-            content: 'Contact added sucessfully',
-        })
-    }
-
-    const error = (message: string) => {
-        messageApi.open({
-            type: 'error',
-            content: message,
-        })
-    }
-
     const addContactRequest = async (values: CreateContactRequest) => {
         const response = await sponsorbook().addContact(values, sponsorId)
         if (response.ok) {
-            success()
+            message.success('Contact added successfully')
             contactTableRef.current?.reload()
             return true
-           
         } else {
             const errorMessage = await response.json()
-            error(errorMessage.detail)
-           
+            message.error(errorMessage.detail)
         }
     }
 
     return (
         <>
-
             <ModalForm
                 title="Add contact"
-     
                 trigger={<Button>Add contact</Button>}
                 submitter={{
                     searchConfig: {
@@ -69,10 +47,11 @@ export default function AddContactModal({ sponsorId, contactTableRef }: Props) {
                             display: 'none',
                         },
                     },
-                
                 }}
                 onFinish={async (values) => {
-                    return await addContactRequest(values as CreateContactRequest)
+                    return await addContactRequest(
+                        values as CreateContactRequest
+                    )
                 }}
             >
                 <ProForm.Group>
@@ -123,7 +102,6 @@ export default function AddContactModal({ sponsorId, contactTableRef }: Props) {
                     />
                 </ProForm.Group>
             </ModalForm>
-        
         </>
     )
 }

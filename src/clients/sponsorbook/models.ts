@@ -15,9 +15,9 @@ export type Ticket = {
 export type Eventer = {
     _id: string
     name: string
-    
+    subOrgnaziations: SubOrganization[]
     status: string
-    description: string
+    info: string
 }
 
 export type Sponsor = {

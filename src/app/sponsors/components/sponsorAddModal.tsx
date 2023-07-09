@@ -1,9 +1,5 @@
 'use client'
-import { Button, message } from 'antd'
-import React from 'react'
-import { CreateSponsorRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
-import sponsorbook from 'sponsorbook/clients/sponsorbook'
-import { Category, Contact, Sponsor } from 'sponsorbook/clients/sponsorbook/models'
+import { PlusOutlined } from '@ant-design/icons'
 import {
     ModalForm,
     ProForm,
@@ -13,8 +9,15 @@ import {
     ProFormText,
     ProFormTextArea,
 } from '@ant-design/pro-components'
-
-
+import { Button, message } from 'antd'
+import React from 'react'
+import sponsorbook from 'sponsorbook/clients/sponsorbook'
+import { CreateSponsorRequest } from 'sponsorbook/clients/sponsorbook/creationModels'
+import {
+    Category,
+    Contact,
+    Sponsor,
+} from 'sponsorbook/clients/sponsorbook/models'
 
 const requestCategories = async () => {
     const response = await sponsorbook().getCategories()
@@ -26,24 +29,29 @@ const requestCategories = async () => {
     return formattedCategories
 }
 
-
 export default function AddSponsorModal() {
     return (
         <ModalForm
             title="Add sponsor"
-            trigger={<Button>Add sponsor</Button>}
+            trigger={
+                <Button>
+                    <PlusOutlined />
+                    Add sponsor
+                </Button>
+            }
             submitter={{
                 searchConfig: {
                     submitText: 'Add contact',
                 },
-                
+
                 resetButtonProps: {
                     style: {
                         display: 'none',
-                }
-            }}}
+                    },
+                },
+            }}
             onFinish={async (values: CreateSponsorRequest) => {
-                await sponsorbook().createSponsor(values)
+                await sponsorbook().addSponsor(values)
                 message.success('Sponsor added!')
             }}
         >
@@ -89,8 +97,8 @@ export default function AddSponsorModal() {
                     width="md"
                     name="categories"
                     label="Select categories"
-                    dataFormat='array'
-                    request={requestCategories}                                 
+                    dataFormat="array"
+                    request={requestCategories}
                     fieldProps={{
                         mode: 'multiple',
                     }}

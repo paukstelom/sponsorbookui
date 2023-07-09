@@ -24,11 +24,6 @@ export type CreateOrganizationRequest = {
     user_email: string
 }
 
-export type LoginRequest = {
-    email: string
-    password: string
-}
-
 export type CreateCategoryRequest = {
     name: string
     info: string
@@ -40,7 +35,7 @@ export type CreateSubOrganizationRequest = {
     organization_id: string
 }
 
-export type CreateEventFormState = {
+export type CreateEventRequest = {
     name: string
     description: string
     sub_organization_ids: string[]

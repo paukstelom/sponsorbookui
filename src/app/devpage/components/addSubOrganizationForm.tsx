@@ -5,7 +5,7 @@ import { CreateSubOrganizationRequest } from 'sponsorbook/clients/sponsorbook/cr
 
 export default function AddSubOrganizationFrom() {
     const onFinish = async (values: CreateSubOrganizationRequest) => {
-        await sponsorbook().createSubOrganization(values)
+        await sponsorbook().addSubOrg(values)
     }
 
     return (
